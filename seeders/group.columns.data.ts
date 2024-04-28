@@ -1,3 +1,5 @@
+import type { IGroup } from "~/types/types"
+
 export const columns = [
     {
       key: 'name',
@@ -12,4 +14,7 @@ export const columns = [
       key: 'project_link',
       label: "Ссылка на проект"
     },
+    {
+      key: 'actions'
+    }
   ]

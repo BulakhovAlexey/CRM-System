@@ -1,10 +1,10 @@
 <template>
-  <h1>Пользователи</h1>
-  <UsersList />
+  <div>
+    <GroupEdit />
+  </div>
 </template>
 
 <script setup lang="ts">
-
 </script>
 
 <style scoped>

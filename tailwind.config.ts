@@ -18,6 +18,7 @@ export default <Partial<Config>>{
       colors: {
         textMain: '#e2e8f0',
         bgMain: '#374151',
+        tableBorder: 'rgb(238,238,238,1)',
         qwe: {
           50: '#EFFDF5',
           100: '#D9FBE8',

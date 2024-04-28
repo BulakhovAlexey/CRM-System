@@ -1,7 +1,7 @@
 import type { IUser } from "~/types/types";
 import { defineStore } from "pinia";
 
-const defaultUser: { user: IUser} = {
+const defaultUser: { user: Pick<IUser, 'email' | 'name' | 'labels' | 'status'>} = {
   user: {
     email: '',
     name: '',

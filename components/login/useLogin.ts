@@ -30,7 +30,7 @@ export function useLogin() {
           name: result.name,
           status: result.status,
           labels: [...result.labels]
-        })
+        } as IUser)
         email.value = ''
         password.value = ''
         router.push('/')

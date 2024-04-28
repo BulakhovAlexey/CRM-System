@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Группы</h1>
-    <GroupsList />
+    <GroupList />
   </div>
 </template>
 
