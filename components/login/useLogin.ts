@@ -1,5 +1,5 @@
 import { useForm, configure } from 'vee-validate'
-import { loginSchema } from './schema.validate'
+import { loginSchema } from '@/lib/schema.validate'
 import { account } from '~/lib/appwrite';
 import { useAuthStore } from '@/stores/auth.store'
 import { v4 as uuid } from 'uuid'

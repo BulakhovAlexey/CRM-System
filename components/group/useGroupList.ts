@@ -1,6 +1,7 @@
 import { DB } from "~/lib/appwrite";
 import { DB_ID, COLLECTION_GROUPS } from "~/DbConstants";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import type { IGroup } from "~/types/types";
 
 
 export function useGroupList() {
@@ -12,15 +13,7 @@ export function useGroupList() {
     })
   }
 
-  const getGroupInfo = function(id:string) {
-    return useQuery({
-      queryKey: ['group_info', id],
-      queryFn: () => DB.getDocument(DB_ID, COLLECTION_GROUPS, id)
-    })
-  }
-
   return {
     getGroupsList,
-    getGroupInfo
   }
 }

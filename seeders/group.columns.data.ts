@@ -7,10 +7,6 @@ export const columns = [
       sortable: true
     },
     {
-      key: 'description',
-      label: "Описание"
-    },
-    {
       key: 'project_link',
       label: "Ссылка на проект"
     },

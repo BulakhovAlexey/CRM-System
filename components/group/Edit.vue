@@ -1,17 +1,23 @@
-<template>
-  <div>
-    {{ data }}
-  </div>
-</template>
-
 <script setup lang="ts">
-import { useGroupList } from './useGroupList';
-const route = useRoute()
-const id = route.params.id as string
-const { getGroupInfo } = useGroupList()
-const { data, isLoading } = getGroupInfo(id)
+import { useSelectedGroupStore } from '~/stores/groups.store';
+
+const groupStore = useSelectedGroupStore()
+const selectedGroup = groupStore.getGroup
 
 </script>
+
+<template>
+  <div class="group-edit">
+    <div class="group-edit__form p-3">
+      <div class="group-edit__top flex justify-between items-center max-w-screen-md">
+        <h1 class="group-edit__title mb-3 text-xl">Редактирование группы - "{{ selectedGroup.name }}"</h1>
+      </div>
+      <div class="group-edit__container max-w-screen-md">
+        <GroupForm @isSuccess="$emit('closeSlideOver', true)" type="edit" :completeFields="true"/>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 
