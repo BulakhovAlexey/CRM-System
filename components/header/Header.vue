@@ -5,7 +5,7 @@
         <HeaderClock />
       </div>
       <div class="header__user flex-1 flex justify-center">
-        <span class="py-2 px-3 rounded-lg bg-white">{{ authStore.getName }}</span>
+        <span class="py-2 px-3 rounded-lg bg-white">{{ authStore.getName }} - {{ authStore.getGroups[0] }}</span>
       </div>
       <div class="header__logOut">
         <button class="transition-colors hover:text-textMain">

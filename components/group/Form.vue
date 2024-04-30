@@ -39,7 +39,7 @@ function handleSubmit(event: Event) {
 </script>
 
 <template>
-  <UForm :state="{}" @submit="handleSubmit" class="flex flex-col gap-4">
+  <UForm :state="{}" @submit="handleSubmit" class="flex flex-col gap-4 text-qwe-50">
     <UFormGroup required label="Название" name="company">
       <UInput v-model="company" immediate v-bind="companyAttrs" type="text" />
       <span class="mt-1 text-red-800 text-sm caption-bottom">{{ errors.company }}</span>

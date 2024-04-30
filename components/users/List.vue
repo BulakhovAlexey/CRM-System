@@ -1,6 +1,4 @@
 <template>
-  <pre>
-  </pre>
   <div class="user-list">
     <div class="user-list__inner p-3 w-full flex-col">
       <div class="user-list__head flex p-3 justify-between items-center gap-4 border-y border-tableBorder">
@@ -16,7 +14,7 @@
       <div class="user-list__row px-3 py-4 flex border-b border-tableBorder justify-between items-center gap-4" v-for="user in (data.data.value?.users as unknown as IUserCell[])">
         <div class="user-list__cell">{{ user.name }}</div>
         <div class="user-list__cell">{{ user.email }}</div>
-        <div class="user-list__cell">{{ (user.labels?.length == 1) ? (user.labels[0].toLocaleUpperCase()) : '' }}</div>
+        <div class="user-list__cell">{{ (user.labels?.length && user.labels?.length > 1) ? (user.labels[0].toLocaleUpperCase()) : '' }}</div>
         <div class="user-list__cell">{{ dateFormatter(user.$createdAt) }}</div>
         <div class="user-list__cell">{{ dateFormatter(user.accessedAt) }}</div>
       </div>

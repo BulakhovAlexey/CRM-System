@@ -1,6 +1,7 @@
 
 import sdk from 'node-appwrite'
 import { PROJECT_NAME_ID, API } from '~/DbConstants';
+import type { EnumRole } from '~/types/types';
 
 const client = new sdk.Client();
 
@@ -19,5 +20,14 @@ export const getUsers = async () => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+
+export const setRoleToUser = async (id:string, role: EnumRole[]) => {
+  try {
+    const response = await users.updateLabels(id, role)
+    return response
+  } catch (error) {
+    console.error(error);
   }
 }

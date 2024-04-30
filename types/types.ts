@@ -18,10 +18,31 @@ export interface ITask extends IBaseFields{
 export interface IUser extends IBaseFields{
   email: string,
   name: string,
-  labels?: string[],
+  labels: string[],
   status: boolean
 }
 
 export interface IUserCell extends IUser{
   accessedAt: string
 }
+
+export enum EnumRole {
+  'PM' = 'PM',
+  'QA' = 'QA',
+  'Developer' = 'Developer',
+  'Designer' = 'Designer',
+}
+
+export const roles = [{
+  id: EnumRole.Developer,
+  role: 'Developer'
+}, {
+  id: EnumRole.QA,
+  role: 'QA'
+}, {
+  id: EnumRole.PM,
+  role: 'PM'
+}, {
+  id: EnumRole.Designer,
+  role: 'Designer'
+}]

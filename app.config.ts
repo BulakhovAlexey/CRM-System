@@ -13,7 +13,7 @@ export default defineAppConfig({
       inner: '',
       label: {
         wrapper: 'flex content-center items-center justify-between',
-        base: 'block font-medium text-gray-800 dark:text-gray-200',
+        base: 'block font-medium text-textMain dark:text-gray-200',
         required: "after:content-['*'] after:ms-0.5 after:text-red-400 dark:after:text-red-400",
       },
       size: {
@@ -32,6 +32,6 @@ export default defineAppConfig({
       default: {
         size: 'sm',
       },
-    }
+    },
   }
 })

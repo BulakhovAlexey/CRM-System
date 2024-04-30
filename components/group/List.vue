@@ -18,7 +18,7 @@
     </UTable>
     <UModal v-model="deletePopupRef">
       <div class="p-4">
-        <div class="popup__tittle text-center mb-4 text-2xl">Удалить группу "{{ groupStore.getName }}"??</div>
+        <div class="popup__tittle text-center mb-4 text-2xl">Удалить группу "{{ groupStore.getName }}"?</div>
         <div class="popup__warning text-center mb-6" v-if="groupStore.isTasks">
           В группе есть <span class="text-red-600">активные</span>  задачи они будут удалены. Необходимо подтверждение
         </div>
@@ -86,8 +86,4 @@ const actions = (row: IGroup) => [
     click: () => deleteAction(row)
   }]
 ]
-
 </script>
-
-<style scoped>
-</style>

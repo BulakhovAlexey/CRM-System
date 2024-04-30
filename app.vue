@@ -1,11 +1,11 @@
 <template>
-  <div class="h-screen w-screen bg-bgMain bg-opacity-60">
+  <div class="h-screen w-screen bg-stone-400 bg-opacity-60">
     <div class="container relative">
       <NuxtLayout name="main" v-if="authStore.isAuth" />
       <NuxtLayout v-else />
     </div>
   </div>
-  <LoadingFullScreenLoading v-if="FSloading.isFSLoading" />
+  <LoadingFullScreen v-if="FSloading.isFSLoading" />
 </template>
 
 <script setup lang="ts">
@@ -19,6 +19,7 @@ const FSloading = useFSloadingStore()
 onMounted(async () => {
   try {
     const user = await account.get()
+    console.log(user);
     if(user) authStore.set(user)
   } catch (error) {
   } finally {
@@ -31,6 +32,5 @@ onMounted(async () => {
 .container{
   max-width: 2000px;
   margin: 0 auto;
-  padding: 0px 10px;
 }
 </style>

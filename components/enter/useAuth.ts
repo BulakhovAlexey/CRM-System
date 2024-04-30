@@ -1,12 +1,17 @@
-import { useForm, configure } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { loginSchema } from '@/lib/schema.validate'
 import { account } from '~/lib/appwrite';
 import { useAuthStore } from '@/stores/auth.store'
 import { v4 as uuid } from 'uuid'
-import type { IUser } from '~/types/types';
+import type { EnumRole, IUser } from '~/types/types';
 
-export function useLogin() {
+export function useAuth(role: Ref<EnumRole>) {
 
+  // console.log(role);
+  // const r = await useFetch('/api/setRoleToUser', {
+  //   query: {id: '12', role}
+  // })
+  // console.log(r);
   const store = useAuthStore()
   const router = useRouter()
 
@@ -25,15 +30,21 @@ export function useLogin() {
       await account.createEmailPasswordSession(values.email, values.password);
       const result = await account.get()
       if (result){
-        store.set({
-          email: result.email,
-          name: result.name,
-          status: result.status,
-          labels: [...result.labels]
-        } as IUser)
-        email.value = ''
-        password.value = ''
-        router.push('/')
+        const response = await useFetch('/api/setRoleToUser', {
+          method: 'post',
+          params: {id: result.$id, role: [role.value, 'user']} // костыль appwrite принимает только массив...(
+        })
+        if(response){
+          store.set({
+            email: result.email,
+            name: result.name,
+            status: result.status,
+            labels: [role.value, 'user']
+          } as IUser)
+          email.value = ''
+          password.value = ''
+          router.push('/')
+        }
       }
     } catch (error) {
       errorMessage.value = 'Неверный логин или пароль!!'

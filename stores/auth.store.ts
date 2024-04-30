@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('userStore', {
   getters: {
     isAuth: state => state.user.status,
     getName: state => state.user.name,
-    getGroups: state => state.user.labels
+    getGroups: state => state.user.labels[0]
   },
   actions: {
     set(data: IUser){
