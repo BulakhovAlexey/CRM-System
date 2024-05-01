@@ -3,9 +3,9 @@
 import { useAuth } from './useAuth';
 import { EnumRole , roles } from '~/types/types';
 
-const selected = ref(roles[0].id)
+//const role = ref(roles[0].id)
 
-const { register, errorMessage, meta, email, emailAttrs, password, passwordAttrs, name, nameAttrs, isSubmitting, errors } = useAuth(selected)
+const { register, roleRef, errorMessage, meta, email, emailAttrs, password, passwordAttrs, name, nameAttrs, isSubmitting, errors } = useAuth()
 
 
 </script>
@@ -27,7 +27,7 @@ const { register, errorMessage, meta, email, emailAttrs, password, passwordAttrs
     </UFormGroup>
     <UFormGroup required label="Роль" size="lg">
       <USelectMenu
-        v-model="selected"
+        v-model="roleRef"
         class="cursor-pointer"
         :options="roles"
         placeholder="Выберите роль"

@@ -3,7 +3,7 @@
     <div class="flex justify-between items-start">
       <Sidebar class="bar z-50 relative" />
       <div class="content bg-white h-screen">
-        <div class="page-container relative">
+        <div class="page-container relative min-h-screen">
           <Header />
           <div class="py-3">
             <NuxtPage />

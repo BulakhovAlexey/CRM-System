@@ -6,18 +6,22 @@ export const columns = [
     },
     {
       key: 'email',
-      label: "Email"
+      label: "Email",
+      sortable: true
     },
     {
       key: 'labels',
-      label: "Должность"
+      label: "Должность",
+      sortable: true
     },
     {
       key: '$createdAt',
-      label: "Дата регистрации"
+      label: "Дата регистрации",
+      sortable: true
     },
     {
       key: 'accessedAt',
-      label: "Последний вход"
+      label: "Последний вход",
+      sortable: true
     },
   ]

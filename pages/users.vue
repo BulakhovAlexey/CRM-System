@@ -1,5 +1,5 @@
 <template>
-  <h1>Пользователи</h1>
+  <h1 class="text-2xl mb-4">Пользователи</h1>
   <UsersList />
 </template>
 

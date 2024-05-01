@@ -18,7 +18,7 @@ export interface ITask extends IBaseFields{
 export interface IUser extends IBaseFields{
   email: string,
   name: string,
-  labels: string[],
+  labels: string[] | string,
   status: boolean
 }
 

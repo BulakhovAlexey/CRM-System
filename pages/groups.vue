@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Группы</h1>
+    <h1 class="text-2xl mb-4">Группы</h1>
     <GroupList />
   </div>
 </template>

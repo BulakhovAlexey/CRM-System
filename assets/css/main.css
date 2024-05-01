@@ -19,3 +19,12 @@
 .page-leave-to {
   filter: blur(5px);
 }
+
+.appear-enter-active,
+.appear-leave-active {
+  transition: opacity 1s ease;
+}
+.appear-enter-from,
+.appear-leave-to {
+  opacity: 0;
+}

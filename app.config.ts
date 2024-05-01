@@ -33,5 +33,13 @@ export default defineAppConfig({
         size: 'sm',
       },
     },
-  }
+    divider: {
+      border: {
+        base: 'flex border-white dark:border-gray-800',
+        horizontal: 'w-full',
+        vertical: 'h-full',
+      },
+      label: 'text-white',
+    },
+  },
 })

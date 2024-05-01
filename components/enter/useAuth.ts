@@ -5,15 +5,12 @@ import { useAuthStore } from '@/stores/auth.store'
 import { v4 as uuid } from 'uuid'
 import type { EnumRole, IUser } from '~/types/types';
 
-export function useAuth(role: Ref<EnumRole>) {
+export function useAuth() {
 
-  // console.log(role);
-  // const r = await useFetch('/api/setRoleToUser', {
-  //   query: {id: '12', role}
-  // })
-  // console.log(r);
+  const isNew = ref<boolean>(false)
   const store = useAuthStore()
   const router = useRouter()
+  const roleRef = ref<EnumRole>()
 
   const { errors, meta, values, defineField, handleSubmit, isSubmitting } = useForm({
     validationSchema: loginSchema,
@@ -30,21 +27,21 @@ export function useAuth(role: Ref<EnumRole>) {
       await account.createEmailPasswordSession(values.email, values.password);
       const result = await account.get()
       if (result){
-        const response = await useFetch('/api/setRoleToUser', {
-          method: 'post',
-          params: {id: result.$id, role: [role.value, 'user']} // костыль appwrite принимает только массив...(
-        })
-        if(response){
-          store.set({
-            email: result.email,
-            name: result.name,
-            status: result.status,
-            labels: [role.value, 'user']
-          } as IUser)
-          email.value = ''
-          password.value = ''
-          router.push('/')
+        if(isNew.value){
+          const response = await useFetch('/api/setRoleToUser', {
+            method: 'post',
+            params: {id: result.$id, role: [roleRef.value, 'user']} // костыль appwrite принимает только массив...(
+          })
         }
+        store.set({
+          email: result.email,
+          name: result.name,
+          status: result.status,
+          labels: isNew.value ? [roleRef.value, 'user'] : result.labels
+        } as IUser)
+        email.value = ''
+        password.value = ''
+        router.push('/')
       }
     } catch (error) {
       errorMessage.value = 'Неверный логин или пароль!!'
@@ -53,6 +50,7 @@ export function useAuth(role: Ref<EnumRole>) {
   })
   const register = handleSubmit(async values => {
     await account.create(uuid(), values.email, values.password, values.name)
+    isNew.value = true
     login()
   })
 
@@ -68,7 +66,8 @@ export function useAuth(role: Ref<EnumRole>) {
     isSubmitting,
     errors,
     meta,
-    errorMessage
+    errorMessage,
+    roleRef
   }
 }
 
