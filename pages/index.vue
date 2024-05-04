@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-2xl mb-4">Задачи</h1>
+  <TasksList/>
 </template>
 
 <script setup lang="ts">

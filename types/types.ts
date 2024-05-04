@@ -12,7 +12,10 @@ export interface IGroup extends IBaseFields {
 
 export interface ITask extends IBaseFields{
   task_name: string,
-  description: string
+  description: string,
+  groups: IGroup,
+  start_date: string,
+  end_date: string
 }
 
 export interface IUser extends IBaseFields{
@@ -46,3 +49,17 @@ export const roles = [{
   id: EnumRole.Designer,
   role: 'Designer'
 }]
+
+export enum EnumColumnsCode{
+  'overdue' = 'overdue',
+  'today' = 'today',
+  'tomorrow' = 'tomorrow',
+  'nextWeek' = 'nextWeek'
+}
+
+export interface IColumnTask {
+  id: EnumColumnsCode,
+  label: string,
+  color: string,
+  items: ITask[]
+}

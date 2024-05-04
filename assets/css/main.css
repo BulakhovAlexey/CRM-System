@@ -2,12 +2,13 @@
 /* LayOuts anim */
 .layout-enter-active,
 .layout-leave-active {
-  transition: all 0.8s ease-in-out 0s;
+  transition: opacity 0.3s ease-in-out 0s;
+  transition: transform 0.8s ease-in-out 0.3s;
 }
 .layout-enter-from,
 .layout-leave-to {
-  transform: translate(100%,0) scale(0.6);
   opacity: 0;
+  transform: translate(100%,0) scale(0.6);
 }
 
 /* pages anim */

@@ -5,8 +5,8 @@
       <div class="content bg-white h-screen">
         <div class="page-container relative min-h-screen">
           <Header />
-          <div class="py-3">
-            <NuxtPage />
+          <div class="py-3 px-2 cnt overflow-auto relative">
+            <NuxtPage class="flex-1" />
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
 .content{
   flex: 1 1 100%;
 }
-.page-container{
-  padding: 64px 10px 30px;
+.cnt{
+  height: calc(100vh - 64px);
 }
 </style>

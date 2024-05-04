@@ -1,5 +1,5 @@
 <template>
-  <header class="top-0 left-0 w-full absolute z-50 bg-slate-300">
+  <header class="w-full bg-slate-300">
     <div class="header__inner p-3 flex justify-between items-center gap-6">
       <div class="header__date py-2 px-3 rounded-lg bg-white">
         <HeaderClock />

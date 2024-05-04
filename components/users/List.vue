@@ -1,6 +1,8 @@
 <template>
   <div class="user-list">
-    <UTable 
+    <!-- todo loader -->
+    <div v-if="pending" class="">LOADING.....</div>
+    <UTable v-else
     :columns="columns" 
     :rows="(list as IUserCell[])"
     :loading="pending"
