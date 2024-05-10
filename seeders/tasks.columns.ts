@@ -14,13 +14,13 @@ export const taskColumns = [
     items: []
   },
   {
-    id: EnumColumnsCode.tomorrow,
-    label: 'На завтра',
+    id: EnumColumnsCode.this_week,
+    label: 'На этой неделе',
     color: 'blue600',
     items: []
   },
   {
-    id: EnumColumnsCode.nextWeek,
+    id: EnumColumnsCode.next_week,
     label: 'Следующая неделя',
     color: 'blue400',
     items: []

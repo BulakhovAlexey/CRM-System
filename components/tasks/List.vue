@@ -1,19 +1,45 @@
 <script setup lang="ts">
-import type { IColumnTask, ITask } from '~/types/types';
+import type { IColumnTask, ITask, IUser } from '~/types/types';
 import { useTasks } from './useTasks';
 import { dateFormatter } from '~/lib/supportFunctions';
+import { useSelectedTaskStore } from '~/stores/task.store';
 
 const { getBoard } = useTasks()
-const { data, isFetching, refetch } = getBoard
+const { data, isFetching } = getBoard
+const selectedTaskStore = useSelectedTaskStore()
+
+const users = ref<IUser[] | null>(null);
+const loading = ref<boolean>(true)
+const open = ref<boolean>(false)
+
+onMounted(async () => {
+  const response = await fetch('/api/getUsers');
+  users.value = await response.json();
+  loading.value = false
+});
+
+const getUserLabel = (executor: string): string => {
+  if (users.value) {
+    const user = users.value.find(user => user.$id === executor);
+    return user ? user.name : '';
+  }
+  return '';
+}
+
+const taskSlideOverIsOpen = ref<boolean>(false)
+const viewTask = (task: ITask) => {
+  selectedTaskStore.set(task)
+  taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
+}
 
 </script>
 
 <template>
-  <TransitionGroup name="layout">
+  <TransitionGroup name="appear">
     <div v-if="isFetching" class="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <Icon name="radix-icons:update" class="animate-spin" size="50" />
     </div>
-    <div v-else  class="tasks">
+    <div v-else class="tasks">
       <div class="tasks__columns grid grid-cols-4 min-h-full">
         <div v-for="column in (data as IColumnTask[])"
           :key="column.id"
@@ -24,19 +50,28 @@ const { data, isFetching, refetch } = getBoard
           :class="column.color">
             {{ column.label }}({{ column.items.length }})
           </div>
-          <div class="task-column__add flex gap-1 justify-center items-center overflow-hidden p-2 cursor-pointer">
-            <Icon name="radix-icons:plus-circled" size="20" class="task-column__add-icon" />
-            <span class="task-column__add-text text-nowrap inline-block overflow-hidden w-0 transition-all duration-300">Создать задачу</span>
-          </div>
+          <TasksCreateModal />
           <div class="task-column__body px-2 flex-1">
             <div class="task-column__items flex flex-col gap-4">
               <div 
-              class="item border rounded-md p-2 cursor-pointer" 
+              class="item border rounded-md p-2 cursor-pointer transition-all"
               draggable="true" 
               v-for="task in column.items" 
               :key="task.$id">
-                <div class="item__title mb-3 text-start">{{ task.task_name }}</div>
-                <div class="item__badge flex justify-end">
+                <div class="item__top flex justify-between items-center mb-3">
+                  <div class="item__title text-start">{{ task.task_name }}</div>
+                  <Icon @click="viewTask(task)" name="radix-icons:eye-open" size="15" />
+                </div>
+                <div class="item__badges mb-2">
+                  <div class="item__users flex justify-start items-center gap-2">
+                    <USkeleton v-if="loading" class="w-[45px] h-[24px]" />
+                    <UBadge v-else color="gray" :label="getUserLabel(task.owner)"/>
+                    <Icon name='radix-icons:arrow-right' size="17" />
+                    <USkeleton v-if="loading" class="w-[45px] h-[24px]" />
+                    <UBadge v-else color="gray" :label="getUserLabel(task.executor)"/>
+                  </div>
+                </div>
+                <div class="item__date flex justify-end">
                   <UBadge color="gray" :label="dateFormatter(task.end_date)" />
                 </div>
               </div> 
@@ -46,6 +81,11 @@ const { data, isFetching, refetch } = getBoard
       </div>
     </div>
   </TransitionGroup>
+  <USlideover v-model="taskSlideOverIsOpen" :ui="{width: 'w-screen max-w-[1000px]'}">
+    <div class="p-4 flex-1">
+      <TasksTaskView />
+    </div>
+  </USlideover>
 </template>
 
 <style scoped>
@@ -69,11 +109,5 @@ const { data, isFetching, refetch } = getBoard
 }
 .blue600{
   @apply bg-blue-400
-}
-.task-column__add:hover > .task-column__add-text{
-  width: 130px;
-  overflow: auto;
-  opacity: 1;
-  transition: all 0.4s ease 0s;
 }
 </style>

@@ -15,7 +15,9 @@ export interface ITask extends IBaseFields{
   description: string,
   groups: IGroup,
   start_date: string,
-  end_date: string
+  end_date: string,
+  executor: string,
+  owner: string
 }
 
 export interface IUser extends IBaseFields{
@@ -53,8 +55,8 @@ export const roles = [{
 export enum EnumColumnsCode{
   'overdue' = 'overdue',
   'today' = 'today',
-  'tomorrow' = 'tomorrow',
-  'nextWeek' = 'nextWeek'
+  'this_week' = 'this_week',
+  'next_week' = 'next_week'
 }
 
 export interface IColumnTask {
@@ -62,4 +64,9 @@ export interface IColumnTask {
   label: string,
   color: string,
   items: ITask[]
+}
+
+export interface Executor {
+  id: string,
+  label: string
 }

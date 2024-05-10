@@ -12,12 +12,15 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     'nuxt-icon',
     '@pinia/nuxt',
-    "@nuxt/image"
+    '@nuxt/image',
   ],
   veeValidate: {
     autoImports: true,
   },
   pinia: {
     storesDirs: ['./stores/**'],
+  },
+  build: {
+    transpile: ['@vuepic/vue-datepicker']
   },
 })

@@ -34,6 +34,7 @@ export function useAuth() {
           })
         }
         store.set({
+          $id: result.$id,
           email: result.email,
           name: result.name,
           status: result.status,
