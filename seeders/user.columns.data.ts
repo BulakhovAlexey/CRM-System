@@ -1,5 +1,10 @@
 export const columns = [
     {
+      key: '$id',
+      label: "ID",
+      sortable: false
+    },
+    {
       key: 'name',
       label: "Имя",
       sortable: true
