@@ -35,7 +35,7 @@ export function useTasks() {
 
     // Получаем первый день текущей недели, который не раньше завтрашнего дня
     let firstDayOfWeek = new Date(tomorrow);
-    firstDayOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + (tomorrow.getDay() === 0 ? -6 : 1));
+    firstDayOfWeek.setDate(tomorrow.getDate() - tomorrow.getDay() + (tomorrow.getDay() === 1 ? -6 : 1));
 
     // Получаем последний день текущей недели
     const lastDayOfWeek = new Date(firstDayOfWeek);

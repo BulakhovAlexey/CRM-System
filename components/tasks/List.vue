@@ -27,8 +27,10 @@ const getUserLabel = (executor: string): string => {
 }
 
 const taskSlideOverIsOpen = ref<boolean>(false)
+const selectedTaskID = ref<string>('')
 const viewTask = (task: ITask) => {
   selectedTaskStore.set(task)
+  selectedTaskID.value = task.$id
   taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
 }
 
@@ -54,13 +56,14 @@ const viewTask = (task: ITask) => {
           <div class="task-column__body px-2 flex-1">
             <div class="task-column__items flex flex-col gap-4">
               <div 
-              class="item border rounded-md p-2 cursor-pointer transition-all"
+              class="item border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all"
               draggable="true" 
-              v-for="task in column.items" 
+              v-for="task in column.items"
               :key="task.$id">
                 <div class="item__top flex justify-between items-center mb-3">
-                  <div class="item__title text-start">{{ task.task_name }}</div>
-                  <Icon @click="viewTask(task)" name="radix-icons:eye-open" size="15" />
+                  <div class="item__title text-start flex-1">{{ task.task_name }}</div>
+                  <Icon name="line-md:edit" size="18" class="icon scale-0 hover:opacity-65" />
+                  <Icon name="radix-icons:dots-horizontal" @click="viewTask(task)" class="icon scale-0 hover:opacity-65" size="18" />
                 </div>
                 <div class="item__badges mb-2">
                   <div class="item__users flex justify-start items-center gap-2">
@@ -82,8 +85,8 @@ const viewTask = (task: ITask) => {
     </div>
   </TransitionGroup>
   <USlideover v-model="taskSlideOverIsOpen" :ui="{width: 'w-screen max-w-[1000px]'}">
-    <div class="p-4 flex-1">
-      <TasksTaskView />
+    <div id="taskSlideOverBody" class="p-4 h-screen overflow-auto">
+      <TasksTaskView :id="selectedTaskID" />
     </div>
   </USlideover>
 </template>
@@ -109,5 +112,11 @@ const viewTask = (task: ITask) => {
 }
 .blue600{
   @apply bg-blue-400
+}
+.icon{
+  @apply mx-2
+}
+.item:hover .icon{
+  @apply scale-100 transition-all
 }
 </style>

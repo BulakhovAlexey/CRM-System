@@ -3,3 +3,4 @@ export const API ='3c8c3f198d6668efa77e9922bf0bf7fa36f6b46ff7a860e54f44fd8b8d6e4
 export const DB_ID = 'crm_system'
 export const COLLECTION_GROUPS = 'groups'
 export const COLLECTION_TASKS = 'tasks'
+export const COLLECTION_COMMENTS = '66404ad7000dda3a05dc'

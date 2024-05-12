@@ -17,7 +17,14 @@ export interface ITask extends IBaseFields{
   start_date: string,
   end_date: string,
   executor: string,
-  owner: string
+  owner: string,
+  comments?: IComment[]
+}
+
+export interface IComment extends IBaseFields{
+  text: string,
+  author: string
+  tasks: ITask
 }
 
 export interface IUser extends IBaseFields{
