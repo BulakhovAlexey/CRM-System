@@ -6,7 +6,7 @@
         <div class="page-container relative min-h-screen">
           <Header />
           <div class="py-3 px-2 cnt overflow-auto relative">
-            <NuxtPage class="flex-1" />
+            <NuxtPage  />
           </div>
         </div>
       </div>

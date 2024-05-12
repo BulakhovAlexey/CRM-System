@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { useAuth } from './useAuth';
 
+const emit = defineEmits(['rotating'])
 const { login, errorMessage, meta, email, emailAttrs, password, passwordAttrs, isSubmitting, errors } = useAuth()
+
+const rotate = () => {
+  emit('rotating')
+}
 
 </script>
 
@@ -20,7 +25,7 @@ const { login, errorMessage, meta, email, emailAttrs, password, passwordAttrs, i
       <UButton trailing :disabled="!meta.touched" :loading="isSubmitting" type="submit" class="uppercase">
         Войти в систему
       </UButton>
-      <UButton @click="$emit('rotating')" trailing type="button" class="uppercase bg-gray-600">
+      <UButton @click="rotate" trailing type="button" class="uppercase bg-gray-600">
         Регистрация
       </UButton>
     </div>

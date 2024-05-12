@@ -1,12 +1,14 @@
 
 <script setup lang="ts">
 import { useAuth } from './useAuth';
-import { EnumRole , roles } from '~/types/types';
+import { roles } from '~/types/types';
 
-//const role = ref(roles[0].id)
-
+const emit = defineEmits(['rotating'])
 const { register, roleRef, errorMessage, meta, email, emailAttrs, password, passwordAttrs, name, nameAttrs, isSubmitting, errors } = useAuth()
 
+const rotate = () => {
+  emit('rotating')
+}
 
 </script>
 
@@ -39,7 +41,7 @@ const { register, roleRef, errorMessage, meta, email, emailAttrs, password, pass
       <UButton trailing :disabled="!meta.touched" :loading="isSubmitting" type="submit" class="uppercase">
         Регистрация
       </UButton>
-      <UButton @click="$emit('rotating')" trailing type="button" class="uppercase bg-gray-600">
+      <UButton @click="rotate" trailing type="button" class="uppercase bg-gray-600">
         Авторизация
       </UButton>
     </div>
