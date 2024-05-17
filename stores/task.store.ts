@@ -38,13 +38,13 @@ export const useSelectedTaskStore = defineStore('taskStore', {
   }
 })
 
-// export const addGroupSlideOver = defineStore('groupSlideOverStore', {
-//   state: () => ({
-//     isClosed: true
-//   }),
-//   actions: {
-//     set(data:boolean){
-//       this.$patch({isClosed: data})
-//     },
-//   }
-// })
+export const useTaskUpdateModalStore = defineStore('taskUpdateModalStore', {
+  state: () => ({
+    isOpen: false
+  }),
+  actions: {
+    set(data:boolean){
+      this.$patch({isOpen: data})
+    },
+  }
+})

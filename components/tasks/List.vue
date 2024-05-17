@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { IColumnTask, ITask, IUser } from '~/types/types';
 import { useTasks } from './useTasks';
+import { useAuthStore } from '@/stores/auth.store'
 import { dateFormatter } from '~/lib/supportFunctions';
-import { useSelectedTaskStore } from '~/stores/task.store';
+import { useSelectedTaskStore, useTaskUpdateModalStore } from '~/stores/task.store';
+
+const authStore = useAuthStore()
+const updateModalStore = useTaskUpdateModalStore()
 
 const { getBoard } = useTasks()
 const { data, isFetching } = getBoard
@@ -28,10 +32,17 @@ const getUserLabel = (executor: string): string => {
 
 const taskSlideOverIsOpen = ref<boolean>(false)
 const selectedTaskID = ref<string>('')
-const viewTask = (task: ITask) => {
-  selectedTaskStore.set(task)
-  selectedTaskID.value = task.$id
-  taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
+const editTask = ref<boolean>(false)
+
+const viewTask = (task: ITask, isOwner: boolean = false) => {
+  if(isOwner) editTask.value = true
+  if(editTask.value){
+    selectedTaskStore.set(task)
+    updateModalStore.set(true)
+  } else {
+    selectedTaskID.value = task.$id
+    taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
+  }
 }
 
 </script>
@@ -62,8 +73,18 @@ const viewTask = (task: ITask) => {
               :key="task.$id">
                 <div class="item__top flex justify-between items-center mb-3">
                   <div class="item__title text-start flex-1">{{ task.task_name }}</div>
-                  <Icon name="line-md:edit" size="18" class="icon scale-0 hover:opacity-65" />
-                  <Icon name="radix-icons:dots-horizontal" @click="viewTask(task)" class="icon scale-0 hover:opacity-65" size="18" />
+                  <Icon 
+                  v-if="authStore.getID === task.owner" 
+                  @click="viewTask(task, true)" 
+                  name="line-md:edit" 
+                  size="18" 
+                  class="icon scale-0 hover:opacity-65" />
+                  <Icon 
+                  v-else
+                  name="radix-icons:dots-horizontal" 
+                  @click="viewTask(task)" 
+                  class="icon scale-0 hover:opacity-65" 
+                  size="18" />
                 </div>
                 <div class="item__badges mb-2">
                   <div class="item__users flex justify-start items-center gap-2">
@@ -89,6 +110,11 @@ const viewTask = (task: ITask) => {
       <TasksTaskView :id="selectedTaskID" />
     </div>
   </USlideover>
+  <UModal v-model="updateModalStore.isOpen">
+    <div class="p-4 bg-slate-500 rounded">
+      <TasksForm :editTask="editTask" />
+    </div>
+  </UModal>
 </template>
 
 <style scoped>

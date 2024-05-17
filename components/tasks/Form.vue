@@ -3,12 +3,27 @@ import type { Executor, IGroup } from '~/types/types';
 import { useGroupList } from '../group/useGroupList';
 import { useDatePickerConfig } from '@/lib/supportFunctions'
 import { useCreateTask } from './useCreateTask';
+import { useSelectedTaskStore, type PropType } from '#imports';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
+const props = defineProps({
+  editTask: {
+    type: Boolean,
+    default: false
+  },
+})
+
+const selectedTaskStore = useSelectedTaskStore()
+
+const task = selectedTaskStore.getTask
+
 const { date, format, startTime } = useDatePickerConfig()
-const { name, nameAttrs, description, descriptionAttrs, executorRef, groupRef, errors, createTask, meta, isSubmitting } = useCreateTask(date)
+
+const { name, nameAttrs, description, descriptionAttrs, executorRef, groupRef, errors, createTask, meta, creating, updating, created, updated } = useCreateTask(date, props.editTask)
+
 const { getGroupsListSelector } = useGroupList()
+
 const { data: groups, isFetching } = getGroupsListSelector()
 
 const { data : executors, pending } = useFetch('/api/getUsers',{
@@ -24,16 +39,17 @@ const { data : executors, pending } = useFetch('/api/getUsers',{
     return executors
   }
 })
+
 </script>
 
 <template>
   <UCard class="bg-slate-500">
     <template #header>
-      <h3 class="create-task text-center text-lg text-white">Создать задачу</h3>
+      <h3 class="create-task text-center text-lg text-white">{{ editTask ? "Редактировать задачу" : 'Создать задачу' }}</h3>
     </template>
     <UForm :state="{}" @submit="createTask" class="flex flex-col gap-3">
       <UFormGroup required label="Название" name="name" size="lg">
-        <UInput v-model="name" immediate v-bind="nameAttrs" type="text" />
+        <UInput autocomplete="off" v-model="name" immediate v-bind="nameAttrs" type="text" />
         <UIAppearMessage :condition="errors.name !== undefined && errors.name.length > 0" :message="errors.name"/>
       </UFormGroup>
       <UFormGroup required label="Описание" name="description" size="lg">
@@ -73,9 +89,8 @@ const { data : executors, pending } = useFetch('/api/getUsers',{
       :day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
       />
     </UFormGroup>
-    <UButton :loading="isSubmitting" type="submit" class="justify-center">Создать</UButton>
+    <UButton :loading="updating || creating" type="submit" class="justify-center">{{ editTask ? 'Сохранить' : 'Создать' }}</UButton>
     </UForm>
-    {{ errors }}
   </UCard>
 </template>
 

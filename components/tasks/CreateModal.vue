@@ -8,10 +8,10 @@ const isOpen = ref<boolean>(false)
     <span class="create-task__add-text text-nowrap inline-block overflow-hidden w-0 transition-all duration-300">Создать задачу</span>
   </div>
   <UModal v-model="isOpen">
-      <div class="p-4 bg-slate-500 rounded">
-        <TasksForm/>
-      </div>
-    </UModal>
+    <div class="p-4 bg-slate-500 rounded">
+      <TasksForm />
+    </div>
+  </UModal>
 </template>
 
 <style scoped>

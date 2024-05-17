@@ -4,15 +4,19 @@ import { useMutation } from "@tanstack/vue-query";
 import { useTasks } from "./useTasks";
 import { useAuthStore } from "#imports";
 import { DB_ID, COLLECTION_TASKS } from "~/DbConstants";
+import { useSelectedTaskStore, useTaskUpdateModalStore } from '@/stores/task.store'
 import { loginSchema } from '@/lib/schema.validate'
 
 
-export function useCreateTask(date: Ref<Date | undefined>) {
+export function useCreateTask(date: Ref<Date | undefined>, editTask: boolean = false) {
 
+  const selectedTaskStore = useSelectedTaskStore()
+  const updateModalStore = useTaskUpdateModalStore()
+  const task = selectedTaskStore.getTask
   const { getBoard } = useTasks()
   const { refetch } = getBoard
   const authStore = useAuthStore()
-  const { errors, meta, values, defineField, handleSubmit, isSubmitting } = useForm({
+  const { errors, meta, values, defineField, setFieldValue, handleSubmit, isSubmitting } = useForm({
     //validationSchema: loginSchema.pick(['email', 'password'])
   })
 
@@ -25,10 +29,16 @@ export function useCreateTask(date: Ref<Date | undefined>) {
 
   const [name, nameAttrs] = defineField('name');
   const [description, descriptionAttrs] = defineField('description');
-  //const [password, passwordAttrs] = defineField('password');
 
+  if(editTask) {
+    setFieldValue('name', task.task_name)
+    setFieldValue('description', task.description)
+    executorRef.value = task.executor
+    groupRef.value = task.groups.$id
+    date.value = new Date(task.end_date)
+  }
   
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate: create, isPending: creating, isSuccess: created } = useMutation({
     mutationKey: ['createTask'],
     mutationFn: () => DB.createDocument(DB_ID, COLLECTION_TASKS, uuid(), {
       task_name: name.value,
@@ -44,9 +54,24 @@ export function useCreateTask(date: Ref<Date | undefined>) {
     }
   })
 
-  const createTask = handleSubmit(async() => {
-    mutate()
-  }) 
+  const { mutate: update, isPending: updating, isSuccess: updated } = useMutation({
+    mutationKey: ['updateTask', task.$id],
+    mutationFn: () => DB.updateDocument(DB_ID, COLLECTION_TASKS, task.$id, {
+      task_name: name.value,
+      description: description.value,
+      groups: groupRef.value,
+      start_date: new Date(),
+      end_date: date.value,
+      executor: executorRef.value,
+      owner: authStore.getID
+    }),
+    onSuccess: () => {
+      updateModalStore.set(false)
+      refetch()
+    }
+  })
+
+  const createTask = handleSubmit(async() => editTask ? update() : create()) 
 
   return {
     name,
@@ -58,6 +83,10 @@ export function useCreateTask(date: Ref<Date | undefined>) {
     errors,
     meta,
     isSubmitting,
-    createTask
+    createTask,
+    creating,
+    updating,
+    created,
+    updated
   }
 }

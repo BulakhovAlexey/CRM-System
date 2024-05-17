@@ -24,7 +24,6 @@ const addHandler = (commentText: string) => {
 }
 
 const commentHandler = (id: string, actionType: 'upd' | 'del') => {
-  console.log(actionType);
   switch (actionType) {
     case 'del':
       commentToDel.value = id
@@ -51,7 +50,7 @@ smoothScroll()
 </script>
 
 <template>
-  <div class="comments__title">Комментарии</div>
+  <div class="comments__title">Комментарии{{ comments && comments.length > 0 ? `(${comments.length})` : '' }}</div>
   <div 
   :class="{ fetching : isFetching }"
   class="comments__body mt-4 transition-all">

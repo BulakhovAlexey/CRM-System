@@ -1,5 +1,8 @@
 // customize NuxtUi
 export default defineAppConfig({
+  nuxtIcon: {
+    class: 'hover:opacity-50 transition-all cursor-pointer', // default <Icon> class applied
+  },
   ui: {
     primary: 'blue',
     gray: 'cool',

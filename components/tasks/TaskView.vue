@@ -18,8 +18,7 @@ const { data, isFetching } = useQuery({
 })
 
 const task = data as unknown as ITask
-//const taskStore = useSelectedTaskStore()
-// const task: ITask = taskStore.getTask
+const editTask = ref<boolean>(false)
 const users = ref<IUser[] | null>(null);
 const loading = ref<boolean>(true)
 
@@ -52,7 +51,7 @@ const getUserLabel = (executor: string): {name: string | '', position: string | 
   <div v-else>
     <h2 class="task-view__title p-2 mb-3 border rounded-xl text-xl">{{ task.task_name }}</h2>
     <div class="task-view__inner flex gap-2 text-base">
-      <div class="task-view__body flex-[60%] p-1 border rounded-xl overflow-scroll">
+      <div class="task-view__body flex-[60%] p-2 border rounded-xl overflow-scroll">
         <div class="task-view__item border-b py-3">
           <div class="task-view__status">Статус: //todo статус</div>
         </div>
