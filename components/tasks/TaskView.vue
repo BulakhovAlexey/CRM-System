@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { ITask, IUser } from '~/types/types';
+import { EnumStatus, type ITask, type IUser } from '~/types/types';
 import { dateFormatter } from '@/lib/supportFunctions'
-import { defineProps } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { DB } from '~/lib/appwrite';
 import { COLLECTION_TASKS, DB_ID } from '~/DbConstants';
@@ -12,13 +11,14 @@ const props = defineProps({
     required: true
   }
 })
+const emits = defineEmits(['updateStatus'])
+
 const { data, isFetching } = useQuery({
   queryKey: ['get_task', props.id],
   queryFn: () => DB.getDocument(DB_ID, COLLECTION_TASKS, props.id)
 })
 
 const task = data as unknown as ITask
-const editTask = ref<boolean>(false)
 const users = ref<IUser[] | null>(null);
 const loading = ref<boolean>(true)
 
@@ -44,6 +44,10 @@ const getUserLabel = (executor: string): {name: string | '', position: string | 
   };
 }
 
+const statusChangeHandler = async (taskId: keyof Pick<ITask, '$id'> , newStatus: EnumStatus) => {
+  emits('updateStatus', taskId, newStatus)
+}
+
 </script>
 
 <template>
@@ -53,7 +57,10 @@ const getUserLabel = (executor: string): {name: string | '', position: string | 
     <div class="task-view__inner flex gap-2 text-base">
       <div class="task-view__body flex-[60%] p-2 border rounded-xl overflow-scroll">
         <div class="task-view__item border-b py-3">
-          <div class="task-view__status">Статус: //todo статус</div>
+          <div class="task-view__status flex justify-start gap-3 items-center">
+            <span>Статус:</span>
+            <TasksStatusBadge :status="task.status" />
+          </div>
         </div>
         <div class="task-view__item border-b py-3">
           <div class="task-view__text">
@@ -66,9 +73,7 @@ const getUserLabel = (executor: string): {name: string | '', position: string | 
             <NuxtLink :to="`/groups/?q=${task.groups.name}`" class="opacity-60 hover:opacity-100 transition-all">{{ task.groups.name }}</NuxtLink>
           </div>
         </div>
-        <div class="task-view__actions flex justify-between border-b py-3">
-          <UButton>Завершить</UButton>
-        </div>
+        <TasksStatusButtons @statusChange="statusChangeHandler" :task="task"/>
         <div class="task-view__comments comments py-3">
           <TasksCommentsList :taskID="task.$id" :users="users" />
         </div>

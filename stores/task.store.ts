@@ -1,4 +1,4 @@
-import type { ITask } from "~/types/types";
+import { EnumStatus, type ITask } from "~/types/types";
 import { defineStore } from "pinia";
 
 const defaultTask: { task: ITask } = {
@@ -10,6 +10,7 @@ const defaultTask: { task: ITask } = {
     start_date: '',
     end_date: '',
     executor: '',
+    status: EnumStatus.in_process,
     owner: '',
     groups: {
       $id: '',

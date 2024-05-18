@@ -18,7 +18,8 @@ export function useTasks() {
       end_date : task.end_date,
       groups: task.groups,
       executor: task.executor,
-      owner: task.owner
+      owner: task.owner,
+      status: task.status
     }
   }
 

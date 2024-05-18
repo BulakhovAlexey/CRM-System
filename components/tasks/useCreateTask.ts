@@ -1,11 +1,11 @@
 import { DB } from "~/lib/appwrite";
+import { DB_ID, COLLECTION_TASKS } from "~/DbConstants";
 import { v4 as uuid } from "uuid";
 import { useMutation } from "@tanstack/vue-query";
 import { useTasks } from "./useTasks";
-import { useAuthStore } from "#imports";
-import { DB_ID, COLLECTION_TASKS } from "~/DbConstants";
-import { useSelectedTaskStore, useTaskUpdateModalStore } from '@/stores/task.store'
+import { useAuthStore, useSelectedTaskStore, useTaskUpdateModalStore } from "#imports";
 import { loginSchema } from '@/lib/schema.validate'
+import { EnumStatus } from "~/types/types";
 
 
 export function useCreateTask(date: Ref<Date | undefined>, editTask: boolean = false) {
@@ -47,7 +47,8 @@ export function useCreateTask(date: Ref<Date | undefined>, editTask: boolean = f
       start_date: new Date(),
       end_date: date.value,
       executor: executorRef.value,
-      owner: authStore.getID
+      owner: authStore.getID,
+      status: EnumStatus.in_process
     }),
     onSuccess: () => {
       refetch()
@@ -67,6 +68,7 @@ export function useCreateTask(date: Ref<Date | undefined>, editTask: boolean = f
     }),
     onSuccess: () => {
       updateModalStore.set(false)
+      selectedTaskStore.clear()
       refetch()
     }
   })

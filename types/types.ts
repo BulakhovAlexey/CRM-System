@@ -18,7 +18,8 @@ export interface ITask extends IBaseFields{
   end_date: string,
   executor: string,
   owner: string,
-  comments?: IComment[]
+  comments?: IComment[],
+  status: EnumStatus
 }
 
 export interface IComment extends IBaseFields{
@@ -43,6 +44,12 @@ export enum EnumRole {
   'QA' = 'QA',
   'Developer' = 'Developer',
   'Designer' = 'Designer',
+}
+
+export enum EnumStatus {
+  'in_process' = 'делаю',
+  'control' = 'контроль',
+  'done' = 'завершена'
 }
 
 export const roles = [{

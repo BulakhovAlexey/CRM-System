@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { IColumnTask, ITask, IUser } from '~/types/types';
+import { EnumStatus } from '~/types/types';
 import { useTasks } from './useTasks';
 import { useAuthStore } from '@/stores/auth.store'
-import { dateFormatter } from '~/lib/supportFunctions';
 import { useSelectedTaskStore, useTaskUpdateModalStore } from '~/stores/task.store';
+import { useStatusAction } from './useStatusAction';
 
 const authStore = useAuthStore()
 const updateModalStore = useTaskUpdateModalStore()
@@ -14,7 +15,6 @@ const selectedTaskStore = useSelectedTaskStore()
 
 const users = ref<IUser[] | null>(null);
 const loading = ref<boolean>(true)
-const open = ref<boolean>(false)
 
 onMounted(async () => {
   const response = await fetch('/api/getUsers');
@@ -34,7 +34,7 @@ const taskSlideOverIsOpen = ref<boolean>(false)
 const selectedTaskID = ref<string>('')
 const editTask = ref<boolean>(false)
 
-const viewTask = (task: ITask, isOwner: boolean = false) => {
+const taskActions = (task: ITask, isOwner: boolean = false) => {
   if(isOwner) editTask.value = true
   if(editTask.value){
     selectedTaskStore.set(task)
@@ -44,6 +44,16 @@ const viewTask = (task: ITask, isOwner: boolean = false) => {
     taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
   }
 }
+
+const { updateStatus, updatingStatus, taskIdToChange, newStatusToChange } = useStatusAction()
+
+const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
+  taskIdToChange.value = taskID
+  newStatusToChange.value = newStatus
+  taskSlideOverIsOpen.value = !taskSlideOverIsOpen.value
+  updateStatus()
+}
+
 
 </script>
 
@@ -75,14 +85,13 @@ const viewTask = (task: ITask, isOwner: boolean = false) => {
                   <div class="item__title text-start flex-1">{{ task.task_name }}</div>
                   <Icon 
                   v-if="authStore.getID === task.owner" 
-                  @click="viewTask(task, true)" 
+                  @click="taskActions(task, authStore.getID === task.owner)"
                   name="line-md:edit" 
                   size="18" 
                   class="icon scale-0 hover:opacity-65" />
                   <Icon 
-                  v-else
                   name="radix-icons:dots-horizontal" 
-                  @click="viewTask(task)" 
+                  @click="taskActions(task)" 
                   class="icon scale-0 hover:opacity-65" 
                   size="18" />
                 </div>
@@ -96,7 +105,7 @@ const viewTask = (task: ITask, isOwner: boolean = false) => {
                   </div>
                 </div>
                 <div class="item__date flex justify-end">
-                  <UBadge color="gray" :label="dateFormatter(task.end_date)" />
+                  <TasksStatusBadge :status="task.status" />
                 </div>
               </div> 
             </div>
@@ -106,8 +115,8 @@ const viewTask = (task: ITask, isOwner: boolean = false) => {
     </div>
   </TransitionGroup>
   <USlideover v-model="taskSlideOverIsOpen" :ui="{width: 'w-screen max-w-[1000px]'}">
-    <div id="taskSlideOverBody" class="p-4 h-screen overflow-auto">
-      <TasksTaskView :id="selectedTaskID" />
+    <div id="taskSlideOverBody" class="p-4 h-screen overflow-auto scroll-smooth">
+      <TasksTaskView :id="selectedTaskID" @updateStatus="updateStatusHandler" />
     </div>
   </USlideover>
   <UModal v-model="updateModalStore.isOpen">
