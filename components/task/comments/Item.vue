@@ -3,7 +3,7 @@ import type { PropType } from 'vue';
 import type { IComment, IUser } from '~/types/types';
 import { dateFormatter } from '~/lib/supportFunctions';
 import { useAuthStore } from '@/stores/auth.store';
-
+import { boolean } from 'yup';
 
 const props = defineProps({
   comment: {
@@ -13,6 +13,9 @@ const props = defineProps({
   users: {
     type: Array as PropType<IUser[] | null>,
     default: null
+  },
+  isResult: {
+    type: undefined,
   }
 })
 
@@ -29,19 +32,23 @@ const getUserName = (userID: string): string => {
   return userName;
 }
 
-const action = (id: string, actionType: 'upd' | 'del') => {
+const action = (comment: IComment, actionType: 'upd' | 'del') => {
   switch (actionType) {
     case 'upd':
-      emit('commentAction', id, 'upd')
+      emit('commentAction', comment, 'upd')
       break;
     case 'del':
-      emit('commentAction', id, 'del')
+      emit('commentAction', comment, 'del')
       break;
     default:
       throw new Error("Unknown Action");
       break;
   }
 }
+
+const isOwner = (commentID: string, authorID: string) : Boolean => {
+  return commentID === authorID
+} 
 
 </script>
 
@@ -59,17 +66,17 @@ const action = (id: string, actionType: 'upd' | 'del') => {
             {{ getUserName(comment.author) }}
           </NuxtLink>
           <span class="comment__date text-sm opacity-50">{{ dateFormatter(comment.$createdAt) }}</span>
-          <div v-if="comment.author === authStore.getID">
+          <div v-if="isOwner(comment.author, authStore.getID) && !isResult">
             <Icon 
-            @click="action(comment.$id, 'del')" 
-            name="material-symbols:delete-outline-sharp" 
-            size="20" 
-            class="comment__edit" />
+              @click="action(comment, 'del')" 
+              name="material-symbols:delete-outline-sharp" 
+              size="20" 
+              class="comment__delete" />
             <Icon 
-            @click="action(comment.$id, 'upd')" 
-            name="line-md:edit" 
-            size="20" 
-            class="comment__delete" />
+              @click="action(comment, 'upd')" 
+              name="line-md:edit" 
+              size="20" 
+              class="comment__edit" />
           </div>
         </div>
         <p class="comment__text mt-3">{{ comment.text }}</p>
@@ -84,14 +91,15 @@ const action = (id: string, actionType: 'upd' | 'del') => {
   @apply w-[30px] h-[30px] flex justify-center items-center rounded-full bg-slate-400
 }
 .comment__delete,
-.comment__edit{
-  @apply translate-x-full opacity-0 inline-block absolute top-0 right-0 hover:scale-110 transition-all cursor-pointer
+.comment__edit,
+.comment__result{
+  @apply translate-x-full opacity-0 text-slate-700 inline-block absolute top-0 right-0 hover:scale-110 transition-all cursor-pointer
 }
 .comment__delete{
   @apply right-0
 }
 .comment__edit{
-  @apply right-[40px]
+  @apply right-[30px]
 }
 .comment:hover .comment__delete,
 .comment:hover .comment__edit{

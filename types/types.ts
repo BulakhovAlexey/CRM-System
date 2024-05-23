@@ -24,8 +24,9 @@ export interface ITask extends IBaseFields{
 
 export interface IComment extends IBaseFields{
   text: string,
-  author: string
-  tasks: ITask
+  author: string,
+  tasks: ITask,
+  taskResult: boolean
 }
 
 export interface IUser extends IBaseFields{

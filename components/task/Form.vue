@@ -14,6 +14,8 @@ const props = defineProps({
   },
 })
 
+const emits = defineEmits(['closeModal'])
+
 const selectedTaskStore = useSelectedTaskStore()
 
 const task = selectedTaskStore.getTask
@@ -40,12 +42,18 @@ const { data : executors, pending } = useFetch('/api/getUsers',{
   }
 })
 
+const closeModal = () => {
+  emits('closeModal');
+} 
 </script>
 
 <template>
-  <UCard class="bg-slate-500">
+  <UCard class="bg-slate-500 relative">
     <template #header>
-      <h3 class="create-task text-center text-lg text-white">{{ editTask ? "Редактировать задачу" : 'Создать задачу' }}</h3>
+      <div class="create-task__top">
+        <h3 class="create-task text-center flex-1 text-lg text-white">{{ editTask ? "Редактировать задачу" : 'Создать задачу' }}</h3>
+        <Icon @click="closeModal" name="radix-icons:cross-2" size="25" class="absolute top-1 right-2"/>
+      </div>
     </template>
     <UForm :state="{}" @submit="createTask" class="flex flex-col gap-3">
       <UFormGroup required label="Название" name="name" size="lg">
@@ -85,9 +93,10 @@ const { data : executors, pending } = useFetch('/api/getUsers',{
       :enable-minutes="false"
       v-model="date" 
       :format="format"
-      :disabled-week-days="[6, 0]" 
+      
       :day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
       />
+      <!-- :disabled-week-days="[6, 0]"  -->
     </UFormGroup>
     <UButton :loading="updating || creating" type="submit" class="justify-center">{{ editTask ? 'Сохранить' : 'Создать' }}</UButton>
     </UForm>

@@ -59,7 +59,7 @@ const statusChangeHandler = async (taskId: keyof Pick<ITask, '$id'> , newStatus:
         <div class="task-view__item border-b py-3">
           <div class="task-view__status flex justify-start gap-3 items-center">
             <span>Статус:</span>
-            <TasksStatusBadge :status="task.status" />
+            <TaskStatusBadge :status="task.status" />
           </div>
         </div>
         <div class="task-view__item border-b py-3">
@@ -73,9 +73,9 @@ const statusChangeHandler = async (taskId: keyof Pick<ITask, '$id'> , newStatus:
             <NuxtLink :to="`/groups/?q=${task.groups.name}`" class="opacity-60 hover:opacity-100 transition-all">{{ task.groups.name }}</NuxtLink>
           </div>
         </div>
-        <TasksStatusButtons @statusChange="statusChangeHandler" :task="task"/>
+        <TaskStatusButtons @statusChange="statusChangeHandler" :task="task"/>
         <div class="task-view__comments comments py-3">
-          <TasksCommentsList :taskID="task.$id" :users="users" />
+          <TaskCommentsList :taskID="task.$id" :users="users" />
         </div>
       </div>
       <div class="task-view__aside aside border rounded-xl">

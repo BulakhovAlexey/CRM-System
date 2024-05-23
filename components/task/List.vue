@@ -45,6 +45,12 @@ const taskActions = (task: ITask, isOwner: boolean = false) => {
   }
 }
 
+const closeModalHandler = () =>{
+  selectedTaskStore.clear()
+  updateModalStore.set(false)
+  editTask.value = false
+}
+
 const { updateStatus, updatingStatus, taskIdToChange, newStatusToChange } = useStatusAction()
 
 const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
@@ -73,7 +79,7 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
           :class="column.color">
             {{ column.label }}({{ column.items.length }})
           </div>
-          <TasksCreateModal />
+          <TaskCreateModal />
           <div class="task-column__body px-2 flex-1">
             <div class="task-column__items flex flex-col gap-4">
               <div 
@@ -105,7 +111,7 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
                   </div>
                 </div>
                 <div class="item__date flex justify-end">
-                  <TasksStatusBadge :status="task.status" />
+                  <TaskStatusBadge :status="task.status" />
                 </div>
               </div> 
             </div>
@@ -116,12 +122,12 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
   </TransitionGroup>
   <USlideover v-model="taskSlideOverIsOpen" :ui="{width: 'w-screen max-w-[1000px]'}">
     <div id="taskSlideOverBody" class="p-4 h-screen overflow-auto scroll-smooth">
-      <TasksTaskView :id="selectedTaskID" @updateStatus="updateStatusHandler" />
+      <TaskView :id="selectedTaskID" @updateStatus="updateStatusHandler" />
     </div>
   </USlideover>
-  <UModal v-model="updateModalStore.isOpen">
+  <UModal v-model="updateModalStore.isOpen" prevent-close>
     <div class="p-4 bg-slate-500 rounded">
-      <TasksForm :editTask="editTask" />
+      <TaskForm :editTask="editTask" @closeModal="closeModalHandler" />
     </div>
   </UModal>
 </template>
