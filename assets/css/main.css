@@ -29,3 +29,8 @@
 .appear-leave-to {
   opacity: 0;
 }
+
+/* Form */
+form{ 
+  @apply flex flex-col gap-7
+}

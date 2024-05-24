@@ -12,14 +12,14 @@ const rotate = () => {
 
 <template>
   <h1 class="text-2xl py-3">Войти в систему</h1>
-  <UForm :state="{}" @submit="login" class=" flex flex-col gap-5">
+  <UForm :state="{}" @submit="login">
     <UFormGroup required label="Email" name="email" size="lg">
       <UInput v-model="email" immediate v-bind="emailAttrs" type="text" />
-      <span class="mt-1 text-red-800 text-sm caption-bottom">{{ errors.email }}</span>
+      <UIAppearMessage :condition="errors.email !== undefined && errors.email.length > 0" :message="errors.email"/>
     </UFormGroup>
     <UFormGroup required label="Пароль" name="password" size="lg">
       <UInput v-model="password" immediate autocomplete="off" v-bind="passwordAttrs" type="password" />
-      <span class="mt-1 text-red-800 text-sm caption-bottom">{{ errors.password }}</span>
+      <UIAppearMessage :condition="errors.password !== undefined && errors.password.length > 0" :message="errors.password"/>
     </UFormGroup>
     <div class="buttons flex justify-center gap-3">
       <UButton trailing :disabled="!meta.touched" :loading="isSubmitting" type="submit" class="uppercase">

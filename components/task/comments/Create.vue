@@ -40,14 +40,16 @@ const commentAction = () => {
   }
 }
 
+watch(commentText, (newVal) => newVal !== '' ? isEmptyComment.value = false : true)
+
 </script>
 
 <template>
   <div class="create-comment flex flex-col gap-5 mt-7">
-    <div class="create-comment__textarea">
+    <UFormGroup name="Комментарий" required label="Комментарий" :ui="{ label : { base: 'text-black' }, }">
       <UTextarea placeholder="Комментарий.." v-model="commentText" :rows="2" :autofocus="false" />
-    </div>
-    <UIAppearMessage :message="'Пустой комментарий!!'" :condition="isEmptyComment" />
+      <UIAppearMessage :message="'Пустой комментарий!!'" :condition="isEmptyComment" />
+    </UFormGroup>
     <div class="create-comment__button flex justify-end items-end gap-5">
       <UCheckbox 
       v-if="!taskHasResultRef"

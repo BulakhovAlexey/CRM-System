@@ -8,7 +8,7 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: 'text-red-800'
+    default: 'text-red-700'
   },
   condition: {
     type: Boolean,
@@ -18,6 +18,6 @@ const props = defineProps({
 </script>
 <template>
   <Transition name="appear">
-    <span v-if="condition" :class="color" class="mb-1 text-sm text-center">{{ message }}</span>
+    <span v-if="condition" :class="color" class="mb-1 text-sm text-center absolute left-1">{{ message }}</span>
   </Transition>
 </template>

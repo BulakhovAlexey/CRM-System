@@ -3,7 +3,6 @@ import type { PropType } from 'vue';
 import type { IComment, IUser } from '~/types/types';
 import { dateFormatter } from '~/lib/supportFunctions';
 import { useAuthStore } from '@/stores/auth.store';
-import { boolean } from 'yup';
 
 const props = defineProps({
   comment: {

@@ -36,20 +36,21 @@ function handleSubmit(event: Event) {
     console.error('Invalid type:', props.type);
   }
 }
+console.log(typeof errors);
 </script>
 
 <template>
-  <UForm :state="{}" @submit="handleSubmit" class="flex flex-col gap-4 text-qwe-50">
+  <UForm :state="{}" @submit="handleSubmit" class="text-qwe-50">
     <UFormGroup required label="Название" name="company">
       <UInput v-model="company" immediate v-bind="companyAttrs" type="text" />
-      <span class="mt-1 text-red-800 text-sm caption-bottom">{{ errors.company }}</span>
+      <UIAppearMessage :condition="errors.company !== undefined && errors.company.length > 0" :message="errors.company"/>
     </UFormGroup>
     <UFormGroup label="Описание" name="description">
       <UTextarea :maxrows="10" autoresize v-model="description" v-bind="descriptionAttrs" type="textarea" />
     </UFormGroup>
     <UFormGroup required label="Ссылка" name="link">
       <UInput v-model="link" v-bind="linkAttrs" type="text" />
-      <span class="mt-1 text-red-800 text-sm caption-bottom">{{ errors.link }}</span>
+      <UIAppearMessage :condition="errors.link !== undefined && errors.link.length > 0" :message="errors.link"/>
     </UFormGroup>
     <UButton :disabled="!meta.touched" :loading="isSubmitting" type="submit" class="w-1/4 justify-center mx-auto">{{ btnText }}</UButton>
   </UForm>

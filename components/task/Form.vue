@@ -55,7 +55,7 @@ const closeModal = () => {
         <Icon @click="closeModal" name="radix-icons:cross-2" size="25" class="absolute top-1 right-2"/>
       </div>
     </template>
-    <UForm :state="{}" @submit="createTask" class="flex flex-col gap-3">
+    <UForm :state="{}" @submit="createTask">
       <UFormGroup required label="Название" name="name" size="lg">
         <UInput autocomplete="off" v-model="name" immediate v-bind="nameAttrs" type="text" />
         <UIAppearMessage :condition="errors.name !== undefined && errors.name.length > 0" :message="errors.name"/>
