@@ -36,7 +36,6 @@ function handleSubmit(event: Event) {
     console.error('Invalid type:', props.type);
   }
 }
-console.log(typeof errors);
 </script>
 
 <template>

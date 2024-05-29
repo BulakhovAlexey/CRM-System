@@ -4,7 +4,6 @@ import { v4 as uuid } from "uuid";
 import { useMutation } from "@tanstack/vue-query";
 import { useTasks } from "./useTasks";
 import { useAuthStore, useSelectedTaskStore, useTaskUpdateModalStore } from "#imports";
-import { loginSchema } from '@/lib/schema.validate'
 import { EnumStatus } from "~/types/types";
 
 
