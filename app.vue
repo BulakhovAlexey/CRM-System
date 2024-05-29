@@ -3,6 +3,7 @@
     <div class="container relative">
       <NuxtLayout name="main" v-if="authStore.isAuth" />
       <NuxtLayout v-else />
+      <UNotifications />
     </div>
   </div>
   <LoadingFullScreen v-if="FSloading.isFSLoading" />
