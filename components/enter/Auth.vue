@@ -1,8 +1,7 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: "Login/Register | CRM-System",
+  title: "Вход в систему | CRM-System",
 })
-
 const startRotate = ref<boolean>(false)
 
 const rotate = () => {

@@ -6,7 +6,9 @@
 </template>
 
 <script setup lang="ts">
-
+useSeoMeta({
+  title: 'Группы | CRMSystem'
+})
 </script>
 
 <style scoped>
