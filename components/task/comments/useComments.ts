@@ -34,16 +34,17 @@ export const useComments = function(taskId:String) {
     queryFn: () => DB.listDocuments(DB_ID, COLLECTION_COMMENTS),
     select(data) {
       const comments = data.documents as unknown as IComment[]
-      comments.filter(el => el.tasks.$id == taskId)
+      let result = []
+      result = comments.filter(el => el.tasks.$id == taskId)
       resultCommentIndex.value = null
       resultCommentID.value = null
-      comments.find((el, index) => {
+      result.find((el, index) => {
         if(el.taskResult) {
           resultCommentIndex.value = index
           resultCommentID.value = el.$id
         }
       })
-      return comments
+      return result
     },
   })
 
