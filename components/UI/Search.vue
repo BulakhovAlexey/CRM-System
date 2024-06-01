@@ -1,21 +1,23 @@
 <script setup lang="ts">
-const search = defineModel({type: String})
+
+const searchValue = defineModel<string>();
+
+const clearSearch = () => {
+  searchValue.value = '';
+};
 </script>
 
 <template>
-  <div class="search flex justify-center items-center gap-2">
-    <UInput v-model="search" placeholder="Поиск..." />
+  <div class="search inline-flex justify-center items-center gap-2">
+    <UInput v-model="searchValue" placeholder="Поиск..." />
     <Transition name="appear">
       <Icon 
-      v-if="search && search.length > 0" 
-      @click="search = ''"
-      name="ic:sharp-clear" 
-      size="25" 
-      class="hover:rotate-90 transition-all duration-700" />
+        v-if="searchValue && searchValue.length > 0" 
+        @click="clearSearch"
+        name="ic:sharp-clear" 
+        size="25" 
+        class="hover:rotate-90 transition-all duration-700" 
+      />
     </Transition>
   </div>
 </template>
-
-<style scoped>
-
-</style>

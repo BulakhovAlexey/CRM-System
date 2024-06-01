@@ -60,8 +60,8 @@ const isOwner = (commentID: string, authorID: string) : Boolean => {
       <div class="comment__body p-3 rounded-md bg-slate-400 bg-opacity-10 flex-1">
         <div class="comment__body-top relative flex items-center">
           <NuxtLink 
-          :to="`users/?q=${comment.author}`"
-          class="comment__author text-sky-700 mr-4">
+            :to="`users/?q=${comment.author}`"
+            class="comment__author text-sky-700 mr-4">
             {{ getUserName(comment.author) }}
           </NuxtLink>
           <span class="comment__date text-sm opacity-50">{{ dateFormatter(comment.$createdAt) }}</span>
@@ -70,12 +70,14 @@ const isOwner = (commentID: string, authorID: string) : Boolean => {
               @click="action(comment, 'del')" 
               name="material-symbols:delete-outline-sharp" 
               size="20" 
-              class="comment__delete" />
+              class="comment__delete" 
+            />
             <Icon 
               @click="action(comment, 'upd')" 
               name="line-md:edit" 
               size="20" 
-              class="comment__edit" />
+              class="comment__edit" 
+            />
           </div>
         </div>
         <p class="comment__text mt-3">{{ comment.text }}</p>

@@ -17,14 +17,29 @@ const props = defineProps({
   status: {
     type: String as PropType<EnumStatus>,
     required: true,
+  },
+  showTitle: {
+    type: Boolean,
+    default: true
   }
 })
 </script>
 
 <template>
+  <div v-if="showTitle" class="task-view__item border-b py-3">
+    <div class="task-view__status flex justify-start gap-3 items-center">
+      <span>Статус:</span>
+      <UBadge 
+        :color="getTaskStatusColor(status)"
+        :label="status" 
+      />
+    </div>
+  </div>
   <UBadge 
-  :color="getTaskStatusColor(status)"
-  :label="status" />
+    v-else
+    :color="getTaskStatusColor(status)"
+    :label="status" 
+  />
 </template>
 
 <style scoped>

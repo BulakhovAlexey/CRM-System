@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <h1 class="text-2xl mb-4">Группы</h1>
-    <GroupList />
-  </div>
+  <UIPageTitle title="Группы"/>
+  <Group />
 </template>
 
 <script setup lang="ts">

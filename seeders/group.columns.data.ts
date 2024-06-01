@@ -1,6 +1,6 @@
-import type { IGroup } from "~/types/types"
+import type { ITableColumn } from "~/types/types"
 
-export const columns = [
+export const columns: ITableColumn[] = [
     {
       key: 'name',
       label: "Проект",
@@ -8,7 +8,7 @@ export const columns = [
     },
     {
       key: 'project_link',
-      label: "Ссылка на проект"
+      label: "Ссылка на проект",
     },
     {
       key: 'actions'

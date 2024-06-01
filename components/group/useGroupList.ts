@@ -1,7 +1,7 @@
 import { DB } from "~/lib/appwrite";
 import { DB_ID, COLLECTION_GROUPS } from "~/DbConstants";
 import { useQuery } from "@tanstack/vue-query";
-import type { Executor } from "~/types/types";
+import type { Executor, IGroup } from "~/types/types";
 
 
 export function useGroupList() {
@@ -10,6 +10,9 @@ export function useGroupList() {
     return useQuery({
       queryKey: ['groups_list'], 
       queryFn: () => DB.listDocuments(DB_ID, COLLECTION_GROUPS),
+      // select(data) {
+      //   return data.documents as unknown as IGroup[]
+      // },
     })
   }
 

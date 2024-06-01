@@ -1,14 +1,17 @@
 // customize NuxtUi
 export default defineAppConfig({
   nuxtIcon: {
-    class: 'hover:opacity-50 transition-all cursor-pointer', // default <Icon> class applied
+    class: 'hover:opacity-70 transition-all cursor-pointer', // default <Icon> class applied
   },
   ui: {
     primary: 'blue',
     gray: 'cool',
     notifications: {
       // Show toasts at the top right of the screen
-      position: 'top-0 bottom-auto'
+      position: 'top-0 bottom-auto',
+    },
+    notification: {
+      background: 'bg-red-200 dark:bg-gray-900',
     },
     button: {
       default: {

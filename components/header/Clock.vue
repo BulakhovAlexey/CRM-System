@@ -1,7 +1,3 @@
-<template>
-  <div>{{ hourRef }}:{{ minRef }}:{{ secRef }}</div>
-</template>
-
 <script setup lang="ts">
 import { onMounted } from 'vue';
 const zero = (number:number) => {
@@ -25,6 +21,6 @@ const startClock = () => {
 onMounted(startClock)
 </script>
 
-<style scoped>
-
-</style>
+<template>
+  <div>{{ hourRef }}:{{ minRef }}:{{ secRef }}</div>
+</template>

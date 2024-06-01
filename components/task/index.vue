@@ -60,14 +60,11 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
   updateStatus()
 }
 
-
 </script>
 
 <template>
   <TransitionGroup name="appear">
-    <div v-if="isFetching" class="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-      <Icon name="radix-icons:update" class="animate-spin" size="50" />
-    </div>
+    <LoadingContainer v-if="isFetching"/>
     <div v-else class="tasks">
       <div class="tasks__columns grid grid-cols-4 min-h-full">
         <div v-for="column in (data as IColumnTask[])"
@@ -90,16 +87,18 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
                 <div class="item__top flex justify-between items-center mb-3">
                   <div class="item__title text-start flex-1">{{ task.task_name }}</div>
                   <Icon 
-                  v-if="authStore.getID === task.owner" 
-                  @click="taskActions(task, authStore.getID === task.owner)"
-                  name="line-md:edit" 
-                  size="18" 
-                  class="icon scale-0 hover:opacity-65" />
+                    v-if="authStore.getID === task.owner" 
+                    @click="taskActions(task, authStore.getID === task.owner)"
+                    name="line-md:edit" 
+                    size="18" 
+                    class="icon scale-0 hover:opacity-65" 
+                  />
                   <Icon 
-                  name="radix-icons:dots-horizontal" 
-                  @click="taskActions(task)" 
-                  class="icon scale-0 hover:opacity-65" 
-                  size="18" />
+                    name="radix-icons:dots-horizontal" 
+                    @click="taskActions(task)" 
+                    class="icon scale-0 hover:opacity-65" 
+                    size="18" 
+                  />
                 </div>
                 <div class="item__badges mb-2">
                   <div class="item__users flex justify-start items-center gap-2">
@@ -111,7 +110,7 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
                   </div>
                 </div>
                 <div class="item__date flex justify-end">
-                  <TaskStatusBadge :status="task.status" />
+                  <TaskStatusBadge :status="task.status" :showTitle="false" />
                 </div>
               </div> 
             </div>
@@ -122,7 +121,7 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) =>{
   </TransitionGroup>
   <USlideover v-model="taskSlideOverIsOpen" :ui="{width: 'w-screen max-w-[1000px]'}">
     <div id="taskSlideOverBody" class="p-4 h-screen overflow-auto scroll-smooth">
-      <TaskView :id="selectedTaskID" @updateStatus="updateStatusHandler" />
+      <TaskDetail :id="selectedTaskID" @updateStatus="updateStatusHandler" />
     </div>
   </USlideover>
   <UModal v-model="updateModalStore.isOpen" prevent-close>

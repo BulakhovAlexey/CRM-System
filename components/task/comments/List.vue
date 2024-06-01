@@ -47,40 +47,45 @@ const commentHandler = (comment: IComment, actionType: 'upd' | 'del') => {
 </script>
 
 <template>
-  <div class="comments__title">Комментарии{{ comments && comments.length > 0 ? `(${comments.length})` : '' }}</div>
-  <div 
-  :class="{ fetching : isFetching || removingResult }"
-  class="comments__body mt-4 transition-all">
-    <div v-if="comments && comments.length > 0" class="comments__items flex flex-col gap-5">
-      <div class="comments__result result p-3" v-if="resultCommentIndex !== null">
-        <div class="result__top flex justify-between items-center mb-2">
-          <div class="result__title">Результат</div>
-          <UBadge 
-            label="удалить результат" 
-            @click="removeResult"
-            class="cursor-pointer bg-red-400 hover:scale-105 transition-all"
+  <div class="task-view__comments comments py-3">
+    <div class="comments__title">Комментарии{{ comments && comments.length > 0 ? `(${comments.length})` : '' }}</div>
+    <div 
+    :class="{ fetching : isFetching || removingResult }"
+    class="comments__body mt-4 transition-all">
+      <div v-if="comments && comments.length > 0" class="comments__items flex flex-col gap-5">
+        <div class="comments__result result p-3" v-if="resultCommentIndex !== null">
+          <div class="result__top flex justify-between items-center mb-2">
+            <div class="result__title">Результат</div>
+            <UBadge 
+              label="удалить результат" 
+              @click="removeResult"
+              class="cursor-pointer bg-red-400 hover:scale-105 transition-all"
+            />
+          </div>
+          <TaskCommentsItem 
+            :isResult="resultCommentIndex && resultCommentIndex !== null"
+            :comment="comments[resultCommentIndex]" 
+            :users="users" 
+            :key="comments[resultCommentIndex].$id"
           />
         </div>
         <TaskCommentsItem 
-        :isResult="resultCommentIndex && resultCommentIndex !== null"
-        :comment="comments[resultCommentIndex]" 
-        :users="users" 
-        :key="comments[resultCommentIndex].$id"/>
+          v-for="comment in comments" 
+          :comment="comment" 
+          :users="users" 
+          @commentAction="commentHandler"
+          :key="comment.$id"
+        />
       </div>
-      <TaskCommentsItem 
-      v-for="comment in comments" 
-      :comment="comment" 
-      :users="users" 
-      @commentAction="commentHandler"
-      :key="comment.$id"/>
     </div>
+    <TaskCommentsCreate 
+      :commentToEditMessage="commentToEditMessage" 
+      :isEditAction="isEditAction" 
+      :taskHasResult="resultCommentIndex !== null"
+      :loading="isFetching" 
+      @addComment='addHandler'
+    />
   </div>
-  <TaskCommentsCreate 
-  :commentToEditMessage="commentToEditMessage" 
-  :isEditAction="isEditAction" 
-  :taskHasResult="resultCommentIndex !== null"
-  :loading="isFetching" 
-  @addComment='addHandler'/>
 </template>
 
 <style scoped>

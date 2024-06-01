@@ -52,17 +52,17 @@ watch(commentText, (newVal) => newVal !== '' ? isEmptyComment.value = false : tr
     </UFormGroup>
     <div class="create-comment__button flex justify-end items-end gap-5">
       <UCheckbox 
-      v-if="!taskHasResultRef"
-      v-model="isTaskResult" 
-      name="notifications" 
-      label="отметить как результат" 
-      class="cursor-pointer hover:opacity-70 transition-all"
+        v-if="!taskHasResultRef"
+        v-model="isTaskResult" 
+        name="notifications" 
+        label="отметить как результат" 
+        class="cursor-pointer hover:opacity-70 transition-all"
       />
       <UButton 
-      :loading="props.loading" 
-      @click="commentAction"
+        :loading="props.loading" 
+        @click="commentAction"
       > 
-        {{ isEditAction ? 'Изменить комментарий' : 'Добавить комментарий' }}
+      {{ isEditAction ? 'Изменить комментарий' : 'Добавить комментарий' }}
       </UButton>
     </div>
   </div>

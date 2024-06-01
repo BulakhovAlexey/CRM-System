@@ -85,3 +85,9 @@ export interface Executor {
   id: string,
   label: string
 }
+
+export interface ITableColumn {
+  key: string,
+  label?: string,
+  sortable?: boolean
+}

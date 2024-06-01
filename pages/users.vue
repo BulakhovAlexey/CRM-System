@@ -1,6 +1,6 @@
 <template>
-  <h1 class="text-2xl mb-4">Пользователи</h1>
-  <UsersList />
+  <UIPageTitle title="Пользователи"/>
+  <Users />
 </template>
 
 <script setup lang="ts">

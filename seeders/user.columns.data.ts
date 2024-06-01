@@ -1,4 +1,6 @@
-export const columns = [
+import type { ITableColumn } from "~/types/types"
+
+export const columns: ITableColumn[] = [
     {
       key: '$id',
       label: "ID",

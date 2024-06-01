@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import type { IGroup } from '~/types/types';
-import { useGroupList } from '~/components/group/useGroupList'
+import { useGroupList } from '~/components/group/useGroupList';
 import { useSelectedGroupStore } from '~/stores/groups.store';
 import { columns } from '~/seeders/group.columns.data';
-import { useDeleteGroup } from './useDeleteGroup'
+import { useDeleteGroup } from './useDeleteGroup';
+import { text } from './group.lang';
 
 const route = useRoute()
 const search = ref<string>('')
 if(route.query.q && route.query.q.length > 0) search.value = route.query.q as string
 
-
 const groupStore = useSelectedGroupStore()
 const { getGroupsList } = useGroupList()
 const { data: groups, isLoading, refetch, isFetching } = getGroupsList()
+
 const deletePopupRef = ref<boolean>(false)
 const showSlideOver = ref<boolean>(false)
 const create = ref<boolean>(false)
+
 
 const createGroup = () => {
   groupStore.clear()
@@ -37,18 +39,20 @@ const deleteAction = (row: IGroup) => {
 
 const { deleteGroup, idRef } = useDeleteGroup(deletePopupRef, {refetch})
 
+
 const updateData = () => {
   showSlideOver.value = !showSlideOver.value
   refetch()
 }
+
 const actions = (row: IGroup) => [
   [{
-    label: 'Edit',
+    label: text.labels.edit,
     icon: 'i-heroicons-pencil-square-20-solid',
     click: () => editAction(row)
   }],
   [{
-    label: 'Delete',
+    label: text.labels.delete,
     icon: 'i-heroicons-trash-20-solid',
     click: () => deleteAction(row)
   }]
@@ -70,19 +74,20 @@ const filteredRows = computed(() => {
 </script>
 
 <template>
-  <div :class="{ 'blur-sm' : isFetching }">
-    <div class="group__top flex justify-between items-center gap-2 cursor-pointer px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+  <LoadingContainer v-if="isLoading || isFetching" />
+  <div v-else>
+    <div class="group__top">
       <UISearch v-model="search"/>
-      <UButton @click="createGroup" class="group__add self-end">Создать группу</UButton>
-      </div>
+      <UButton @click="createGroup" class="group__add self-end">{{ text.createGroup }}</UButton>
+    </div>
     
     <UTable :columns="columns" 
-    :rows="(filteredRows as unknown as IGroup[])"
-    :loading="isLoading"
-    :empty-state="{ label: 'Ничего не найдено..' , icon : 'i-heroicons-circle-stack-20-solid' }"
-    :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-    :progress="{ color: 'primary', animation: 'carousel' }"
-    class="w-full"
+      :rows="(filteredRows as unknown as IGroup[])"
+      :loading="isLoading"
+      :empty-state="{ label: 'Ничего не найдено..' , icon : 'i-heroicons-circle-stack-20-solid' }"
+      :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+      :progress="{ color: 'primary', animation: 'carousel' }"
+      class="w-full"
     >
       <template #actions-data="{ row }">
         <UDropdown :items="actions(row)">
@@ -90,6 +95,7 @@ const filteredRows = computed(() => {
         </UDropdown>
       </template>
     </UTable>
+    
     <UModal v-model="deletePopupRef">
       <div class="p-4">
         <div class="popup__tittle text-center mb-4 text-2xl">Удалить группу "{{ groupStore.getName }}"?</div>
@@ -99,14 +105,18 @@ const filteredRows = computed(() => {
         <UButton @click="deleteGroup" class="mx-auto block">Удалить</UButton>
       </div>
     </UModal>
+    
     <USlideover v-model="showSlideOver">
-      <div v-if="create" class="p-4 flex-1 bg-slate-400">
-        <GroupCreate @closeSlideOver="updateData"/>
-      </div>
-      <div v-else class="p-4 flex-1 bg-slate-400">
-        <GroupEdit @closeSlideOver="updateData"/>
+      <div class="p-4 flex-1 bg-slate-400">
+        <GroupCreate v-if="create" @closeSlideOver="updateData"/>
+        <GroupEdit v-else @closeSlideOver="updateData"/>
       </div>
     </USlideover>
   </div>
 </template>
 
+<style scoped>
+.group__top{
+  @apply flex justify-between items-center gap-2 cursor-pointer px-3 py-3.5 border-b border-gray-200 dark:border-gray-700
+}
+</style>

@@ -1,10 +1,10 @@
 <template>
   <div class="mt-4">
     <UDivider label="Имя" orientation="horizontal" />
-    <ProfileChangeName/>
+    <UserProfileChangeName/>
     <UDivider label="Email" orientation="horizontal" />
-    <ProfileChangeEmail/>
+    <UserProfileChangeEmail/>
     <UDivider label="Пароль" orientation="horizontal" />
-    <!-- todo  ProfileChangePassword -->
+    <!-- todo  UserProfileChangePassword -->
   </div>
 </template>

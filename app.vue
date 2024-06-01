@@ -1,14 +1,3 @@
-<template>
-  <div class="h-screen w-screen bg-stone-400 bg-opacity-60">
-    <div class="container relative">
-      <NuxtLayout name="main" v-if="authStore.isAuth" />
-      <NuxtLayout v-else />
-      <UNotifications />
-    </div>
-  </div>
-  <LoadingFullScreen v-if="FSloading.isFSLoading" />
-</template>
-
 <script setup lang="ts">
 import { useAuthStore } from './stores/auth.store';
 import { account } from './lib/appwrite';
@@ -28,6 +17,17 @@ onMounted(async () => {
   }
 })
 </script>
+
+<template>
+  <div class="h-screen w-screen bg-stone-400 bg-opacity-60">
+    <div class="container relative">
+      <NuxtLayout name="main" v-if="authStore.isAuth" />
+      <NuxtLayout v-else />
+      <UNotifications />
+    </div>
+  </div>
+  <LoadingFullScreen v-if="FSloading.isFSLoading" />
+</template>
 
 <style scoped>
 .container{

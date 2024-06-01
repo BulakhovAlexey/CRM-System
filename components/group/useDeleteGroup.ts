@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/vue-query'
 import { DB } from '~/lib/appwrite';
 import { DB_ID, COLLECTION_GROUPS } from '~/DbConstants';
-import type { IGroup } from '~/types/types';
 
 
 export function useDeleteGroup(deletePopupRef: Ref<boolean>, { refetch } : { refetch : () => void}) {

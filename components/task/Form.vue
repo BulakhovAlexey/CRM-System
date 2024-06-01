@@ -73,7 +73,8 @@ const closeModal = () => {
           :options="(groups as unknown as IGroup[])"
           placeholder="Выберите группу"
           value-attribute="id"
-          option-attribute="label"/>
+          option-attribute="label"
+        />
       </UFormGroup>
       <UFormGroup required label="Исполнитель" size="lg">
         <USkeleton v-if="pending" class="w-full h-[40px]" />
@@ -84,26 +85,27 @@ const closeModal = () => {
           :options="(executors as Executor[])"
           placeholder="Выберите исполнителя"
           value-attribute="id"
-          option-attribute="label"/>
+          option-attribute="label"
+        />
       </UFormGroup>
-    <UFormGroup required label="Дата готовности" name="end_date" size="lg">
-      <VueDatePicker 
-      no-minutes-overlay
-      placeholder="Выберите дату"
-      :enable-minutes="false"
-      v-model="date" 
-      :format="format"
-      
-      :day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
-      />
-      <!-- :disabled-week-days="[6, 0]"  -->
-    </UFormGroup>
-    <UButton :loading="updating || creating" type="submit" class="justify-center">{{ editTask ? 'Сохранить' : 'Создать' }}</UButton>
+      <UFormGroup required label="Дата готовности" name="end_date" size="lg">
+        <VueDatePicker 
+          no-minutes-overlay
+          placeholder="Выберите дату"
+          :enable-minutes="false"
+          v-model="date" 
+          :format="format"
+
+          :day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
+        />
+        <!-- :disabled-week-days="[6, 0]"  -->
+      </UFormGroup>
+      <UButton 
+        :loading="updating || creating" 
+        type="submit" 
+        class="justify-center"
+      >{{ editTask ? 'Сохранить' : 'Создать' }}
+      </UButton>
     </UForm>
   </UCard>
 </template>
-
-
-<style scoped>
-
-</style>
