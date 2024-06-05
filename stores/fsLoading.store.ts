@@ -1,13 +1,12 @@
-
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
 export const useFSloadingStore = defineStore('FSLoading', {
-  state: () => ({
-    isFSLoading: true
-  }),
-  actions: {
-    set(data:boolean){
-      this.$patch({isFSLoading: data})
-    },
-  }
+	state: () => ({
+		isFSLoading: true,
+	}),
+	actions: {
+		set(data: boolean) {
+			this.$patch({ isFSLoading: data })
+		},
+	},
 })

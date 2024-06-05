@@ -1,26 +1,27 @@
 import { useMutation } from '@tanstack/vue-query'
-import { DB } from '~/lib/appwrite';
-import { DB_ID, COLLECTION_GROUPS } from '~/DbConstants';
+import { DB } from '~/lib/appwrite'
+import { DB_ID, COLLECTION_GROUPS } from '~/DbConstants'
 
+export function useDeleteGroup(
+	deletePopupRef: Ref<boolean>,
+	{ refetch }: { refetch: () => void }
+) {
+	const idRef = ref<string>('')
+	const { mutate } = useMutation({
+		mutationKey: ['delete_group', idRef.value],
+		mutationFn: () => DB.deleteDocument(DB_ID, COLLECTION_GROUPS, idRef.value),
+		onSuccess: () => {
+			refetch()
+		},
+	})
 
-export function useDeleteGroup(deletePopupRef: Ref<boolean>, { refetch } : { refetch : () => void}) {
+	const deleteGroup = () => {
+		mutate()
+		deletePopupRef.value = false
+	}
 
-  const idRef = ref<string>('')
-  const { mutate } = useMutation({
-    mutationKey: ['delete_group', idRef.value],
-    mutationFn: () => DB.deleteDocument(DB_ID, COLLECTION_GROUPS, idRef.value),
-    onSuccess: () => {
-      refetch()
-    }
-  });
-
-  const deleteGroup = () => {
-    mutate();
-    deletePopupRef.value = false
-  };
-
-  return{
-    deleteGroup,
-    idRef
-  }
+	return {
+		deleteGroup,
+		idRef,
+	}
 }

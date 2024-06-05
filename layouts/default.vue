@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <EnterAuth />
-  </div>
+	<div>
+		<EnterAuth />
+	</div>
 </template>
-

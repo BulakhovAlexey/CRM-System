@@ -1,13 +1,11 @@
 <template>
-  <Task/>
+	<Task />
 </template>
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Задачи | CRMSystem'
+	title: 'Задачи | CRMSystem',
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
