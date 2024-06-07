@@ -1,25 +1,28 @@
+import type { ITask } from '~/types/types'
+import { EnumStatus } from '~/types/types'
 import { DB } from '~/lib/appwrite'
 import { DB_ID, COLLECTION_TASKS } from '~/DbConstants'
 import { v4 as uuid } from 'uuid'
+import { useForm } from 'vee-validate'
 import { useMutation } from '@tanstack/vue-query'
-import { useTasks } from './useTasks'
 import {
 	useAuthStore,
 	useSelectedTaskStore,
 	useTaskUpdateModalStore,
 } from '#imports'
-import { EnumStatus } from '~/types/types'
+import {
+	useNeedUpdateTasksBoard,
+	useIsEditTaskAction,
+} from '~/stores/task.store'
 
-export function useCreateTask(
-	date: Ref<Date | undefined>,
-	editTask: boolean = false
-) {
+export function useCreateTask(date: Ref<Date | undefined>) {
 	const selectedTaskStore = useSelectedTaskStore()
 	const updateModalStore = useTaskUpdateModalStore()
-	const task = selectedTaskStore.getTask
-	const { getBoard } = useTasks()
-	const { refetch } = getBoard
+	const task: ITask = selectedTaskStore.getTask
+	const needUpdateTasksBoard = useNeedUpdateTasksBoard()
 	const authStore = useAuthStore()
+	const isEditActionStore = useIsEditTaskAction()
+
 	const {
 		errors,
 		meta,
@@ -42,7 +45,7 @@ export function useCreateTask(
 	const [name, nameAttrs] = defineField('name')
 	const [description, descriptionAttrs] = defineField('description')
 
-	if (editTask) {
+	if (isEditActionStore.isEditAction) {
 		setFieldValue('name', task.task_name)
 		setFieldValue('description', task.description)
 		executorRef.value = task.executor
@@ -68,7 +71,7 @@ export function useCreateTask(
 				status: EnumStatus.in_process,
 			}),
 		onSuccess: () => {
-			refetch()
+			needUpdateTasksBoard.set(true)
 		},
 	})
 
@@ -91,11 +94,13 @@ export function useCreateTask(
 		onSuccess: () => {
 			updateModalStore.set(false)
 			selectedTaskStore.clear()
-			refetch()
+			needUpdateTasksBoard.set(true)
 		},
 	})
 
-	const createTask = handleSubmit(async () => (editTask ? update() : create()))
+	const createTask = handleSubmit(async () =>
+		isEditActionStore.isEditAction ? update() : create()
+	)
 
 	return {
 		name,

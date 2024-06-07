@@ -6,12 +6,9 @@ const props = defineProps({
 	task: {
 		type: Object as PropType<ITask>,
 		required: true,
-	},
-	users: {
-		type: Object as PropType<IUser[] | null>,
-		default: null,
-	},
+	}
 })
+
 </script>
 
 <template>
@@ -21,7 +18,7 @@ const props = defineProps({
 			:endDate="task.end_date"
 		/>
 		<div class="aside__users p-2">
-			<TaskDetailAsideUsers :task="task" :users="users" />
+			<TaskDetailAsideUsers :task="task" />
 		</div>
 	</div>
 </template>

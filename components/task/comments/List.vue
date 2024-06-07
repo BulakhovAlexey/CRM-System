@@ -7,10 +7,6 @@ const props = defineProps({
 		type: String as PropType<string>,
 		required: true,
 	},
-	users: {
-		type: Array as PropType<IUser[] | null>,
-		default: null,
-	},
 })
 
 const {
@@ -88,14 +84,12 @@ const commentHandler = (comment: IComment, actionType: 'upd' | 'del') => {
 					<TaskCommentsItem
 						:isResult="resultCommentIndex && resultCommentIndex !== null"
 						:comment="comments[resultCommentIndex]"
-						:users="users"
 						:key="comments[resultCommentIndex].$id"
 					/>
 				</div>
 				<TaskCommentsItem
 					v-for="comment in comments"
 					:comment="comment"
-					:users="users"
 					@commentAction="commentHandler"
 					:key="comment.$id"
 				/>

@@ -48,3 +48,25 @@ export const useTaskUpdateModalStore = defineStore('taskUpdateModalStore', {
 		},
 	},
 })
+
+export const useNeedUpdateTasksBoard = defineStore('needUpdateTasksBoard', {
+	state: () => ({
+		needUpdate: false,
+	}),
+	actions: {
+		set(data: boolean) {
+			this.$patch({ needUpdate: data })
+		},
+	},
+})
+
+export const useIsEditTaskAction = defineStore('isEditTaskAction', {
+	state: () => ({
+		isEditAction: false,
+	}),
+	actions: {
+		set(data: boolean) {
+			this.$patch({ isEditAction: data })
+		},
+	},
+})

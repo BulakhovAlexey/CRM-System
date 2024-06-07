@@ -9,10 +9,6 @@ const props = defineProps({
 		type: Object as PropType<IComment>,
 		default: () => [],
 	},
-	users: {
-		type: Array as PropType<IUser[] | null>,
-		default: null,
-	},
 	isResult: {
 		type: undefined,
 	},
@@ -21,11 +17,12 @@ const props = defineProps({
 const emit = defineEmits(['commentAction'])
 
 const authStore = useAuthStore()
+const users = inject('users') as Ref<IUser[]>
 
 const getUserName = (userID: string): string => {
 	let userName = ''
-	if (props.users) {
-		const user = props.users.find(user => user.$id === userID)
+	if (users) {
+		const user = users.value.find(user => user.$id === userID)
 		if (user) userName = user.name
 	}
 	return userName

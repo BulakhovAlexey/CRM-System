@@ -19,15 +19,6 @@ const { data, isFetching } = useQuery({
 
 const task = data as unknown as ITask
 
-const users = ref<IUser[] | null>(null)
-const loading = ref<boolean>(true)
-
-onMounted(async () => {
-	const response = await fetch('/api/getUsers')
-	users.value = await response.json()
-	loading.value = false
-})
-
 const statusChangeHandler = async (
 	taskId: keyof Pick<ITask, '$id'>,
 	newStatus: EnumStatus
@@ -50,10 +41,10 @@ const statusChangeHandler = async (
 				<TaskDetailDescription :description="task.description" />
 				<TaskDetailGroup :group="task.groups.name" />
 				<TaskStatusButtons @statusChange="statusChangeHandler" :task="task" />
-				<TaskCommentsList :taskID="task.$id" :users="users" />
+				<TaskCommentsList :taskID="task.$id" />
 			</div>
 			<div class="task-view__aside aside border rounded-xl">
-				<TaskDetailAside :task="task" :users="users" />
+				<TaskDetailAside :task="task" />
 			</div>
 		</div>
 	</div>

@@ -1,11 +1,12 @@
 import { DB } from '~/lib/appwrite'
 import { DB_ID, COLLECTION_TASKS } from '~/DbConstants'
+import { useNeedUpdateTasksBoard } from '#imports'
 import { useMutation } from '@tanstack/vue-query'
 import { useTasks } from './useTasks'
 
 export function useStatusAction() {
-	const { getBoard } = useTasks()
-	const { refetch } = getBoard
+	
+	const updateBoard = useNeedUpdateTasksBoard()
 
 	const taskIdToChange = ref<string>('')
 	const newStatusToChange = ref<string>('')
@@ -17,7 +18,7 @@ export function useStatusAction() {
 				DB.updateDocument(DB_ID, COLLECTION_TASKS, taskIdToChange.value, {
 					status: newStatusToChange.value,
 				}),
-			onSuccess: () => refetch(),
+			onSuccess: () => updateBoard.set(true),
 		})
 
 	const updateStatus = () => {

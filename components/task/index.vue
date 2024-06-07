@@ -1,9 +1,26 @@
 <script setup lang="ts">
-import type { IColumnTask } from '~/types/types'
+import type { IColumnTask, IUser } from '~/types/types'
 import { useTasks } from './useTasks'
+import { useNeedUpdateTasksBoard } from '~/stores/task.store'
 
 const { getBoard } = useTasks()
-const { data, isFetching } = getBoard
+const { data, isFetching, refetch } = getBoard()
+const needUpdateTasksBoard = useNeedUpdateTasksBoard()
+
+needUpdateTasksBoard.$onAction(({ after }) => {
+	after(result => refetch())
+})
+const users = ref<IUser[] | null>(null)
+const loading = ref<boolean>(true)
+
+onMounted(async () => {
+	const response = await fetch('/api/getUsers')
+	users.value = await response.json()
+	loading.value = false
+})
+
+provide('users', users)
+provide('loading', loading)
 </script>
 
 <template>

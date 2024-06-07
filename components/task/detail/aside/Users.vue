@@ -7,18 +7,17 @@ const props = defineProps({
 		type: Object as PropType<Pick<ITask, 'owner' | 'executor'>>,
 		required: true,
 	},
-	users: {
-		type: Object as PropType<IUser[] | null>,
-		default: null,
-	},
 })
+
+const users = inject('users') as Ref<IUser[]>
+const loading = inject('loading') as Ref<Boolean>
 
 function getUserLabel(executor: string): {
 	name: string | ''
 	position: string | ''
 } {
-	if (props.users) {
-		const user = props.users.find(user => user.$id === executor)
+	if (users) {
+		const user = users.value.find(user => user.$id === executor)
 		if (user) {
 			return {
 				name: user.name,
@@ -39,7 +38,7 @@ const getLink = ($id: string): string => {
 
 <template>
 	<div class="aside__task-owner opacity-80">Постановщик</div>
-	<USkeleton v-if="users === null" class="w-[200px] h-[25px]" />
+	<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
 	<NuxtLink v-else class="mb-2 link" :to="getLink(task.owner)">
 		{{ getUserLabel(task.owner).name }}
 		<span class="text-xs opacity-50">
@@ -47,7 +46,7 @@ const getLink = ($id: string): string => {
 		</span>
 	</NuxtLink>
 	<div class="aside__task-executor opacity-80">Исполнитель</div>
-	<USkeleton v-if="users === null" class="w-[200px] h-[25px]" />
+	<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
 	<NuxtLink v-else class="link" :to="getLink(task.executor)">
 		{{ getUserLabel(task.executor).name }}
 		<span class="text-xs opacity-50">

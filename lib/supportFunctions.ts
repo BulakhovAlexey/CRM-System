@@ -5,6 +5,10 @@ export const dateFormatter = (date: string) => {
 	return format(date, { date: 'short', time: 'short' })
 }
 
+export const dateFormatterShort = (date: string) => {
+	return format(date, "DD MMMM", 'ru')
+}
+
 export const useDatePickerConfig = () => {
 	const date = ref<Date>()
 	const startTime = ref({ hours: 20, minutes: 0 })
