@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ITask } from '~/types/types';
+import type { ITask } from '~/types/types'
 import { EnumStatus } from '~/types/types'
 import { useAuthStore } from '@/stores/auth.store'
 import {
@@ -34,7 +34,6 @@ const taskActions = (task: ITask, isOwner: boolean = false) => {
 	}
 }
 
-
 const closeModalHandler = () => {
 	selectedTaskStore.clear()
 	updateModalStore.set(false)
@@ -52,24 +51,23 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) => {
 }
 </script>
 
-
 <template>
-  <Icon
-    v-if="authStore.getID === task.owner"
-    @click="taskActions(task, authStore.getID === task.owner)"
-    name="line-md:edit"
-    size="18"
-    class="icon scale-0 hover:opacity-65"
-  />
-  <Icon
-    name="radix-icons:dots-horizontal"
-    @click="taskActions(task)"
-    class="icon scale-0 hover:opacity-65"
-    size="18"
-  />
+	<Icon
+		v-if="authStore.getID === task.owner"
+		@click="taskActions(task, authStore.getID === task.owner)"
+		name="line-md:edit"
+		size="18"
+		class="icon scale-0 hover:opacity-65"
+	/>
+	<Icon
+		name="radix-icons:dots-horizontal"
+		@click="taskActions(task)"
+		class="icon scale-0 hover:opacity-65"
+		size="18"
+	/>
 
-  <!--  -->
-  <USlideover
+	<!--  -->
+	<USlideover
 		v-model="taskSlideOverIsOpen"
 		:ui="{ width: 'w-screen max-w-[1000px]' }"
 	>
@@ -90,7 +88,6 @@ const updateStatusHandler = async (taskID: string, newStatus: EnumStatus) => {
 		</div>
 	</UModal>
 </template>
-
 
 <style scoped>
 .icon {
