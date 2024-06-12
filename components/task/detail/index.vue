@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EnumStatus, type ITask, type IUser } from '~/types/types'
+import { EnumStatus, type ITask } from '~/types/types'
 import { useQuery } from '@tanstack/vue-query'
 import { DB } from '~/lib/appwrite'
 import { COLLECTION_TASKS, DB_ID } from '~/DbConstants'
@@ -41,7 +41,7 @@ const statusChangeHandler = async (
 				<TaskDetailDescription :description="task.description" />
 				<TaskDetailGroup :group="task.groups.name" />
 				<TaskStatusButtons @statusChange="statusChangeHandler" :task="task" />
-				<TaskCommentsList :taskID="task.$id" />
+				<TaskCommentsList :taskID="task.$id" :taskStatus="task.status" />
 			</div>
 			<div class="task-view__aside aside border rounded-xl">
 				<TaskDetailAside :task="task" />
