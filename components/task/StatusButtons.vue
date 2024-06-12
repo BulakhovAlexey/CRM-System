@@ -19,54 +19,51 @@ const toast = useToast()
 const isOwner = authStore.getID === props.task.owner
 const isStartStatus = ref<boolean>(props.task.status === EnumStatus.in_process)
 const isDoneStatus = ref<boolean>(props.task.status === EnumStatus.done)
+const disableButton = ref<boolean>(false)
+const notificationText = 'Добавьте результат задачи!'
 
-const showNotification = (text: string) => {
-	toast.add({ title: text })
+const showNotification = () => {
+	disableButton.value = true
+	toast.add({
+		title: notificationText,
+		callback: () => (disableButton.value = false),
+	})
 }
 
 const action = (newStatus: EnumStatus) => {
-	if (resultCommentID.value == null) {
-		let text = ''
-		switch (newStatus) {
-			case EnumStatus.control:
-				text = 'Нужен результат!'
-				break
-			case EnumStatus.done:
-				text = 'Задача еще не выполнена!'
-				break
-			default:
-				break
-		}
-		showNotification(text)
-		return false
-	}
-	emits('statusChange', props.task.$id, newStatus)
+	resultCommentID.value == null
+		? showNotification()
+		: emits('statusChange', props.task.$id, newStatus)
 }
 </script>
 
 <template>
-	<div v-if="isOwner" class="task-view__actions gap-4">
+	<div class="task-view__actions gap-4">
+		<UButton
+			v-if="!isDoneStatus && isOwner"
+			@click="action(EnumStatus.done)"
+			color="gray"
+			:disabled="disableButton"
+		>
+			Завершить
+		</UButton>
+
 		<UButton
 			v-if="!isStartStatus || isDoneStatus"
 			@click="action(EnumStatus.in_process)"
 			color="lime"
+			:disabled="disableButton"
 		>
 			Вернуть в работу
 		</UButton>
-		<UButton v-if="!isDoneStatus" @click="action(EnumStatus.done)" color="gray">
-			Завершить
-		</UButton>
-	</div>
-	<div v-else class="task-view__actions">
+
 		<UButton
 			v-if="isStartStatus"
 			@click="action(EnumStatus.control)"
 			color="amber"
+			:disabled="disableButton"
 		>
 			На контроль
-		</UButton>
-		<UButton v-else @click="action(EnumStatus.in_process)" color="lime">
-			Вернуть в работу
 		</UButton>
 	</div>
 </template>

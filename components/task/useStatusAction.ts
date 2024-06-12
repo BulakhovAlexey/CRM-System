@@ -2,7 +2,6 @@ import { DB } from '~/lib/appwrite'
 import { DB_ID, COLLECTION_TASKS } from '~/DbConstants'
 import { useNeedUpdateTasksBoard } from '#imports'
 import { useMutation } from '@tanstack/vue-query'
-import { useTasks } from './useTasks'
 
 export function useStatusAction() {
 	

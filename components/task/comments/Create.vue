@@ -32,7 +32,8 @@ watch(
 )
 
 const isEmptyComment = ref<boolean>(false)
-const emit = defineEmits(['addComment'])
+const disableButton = ref<boolean>(false)
+const emit = defineEmits(['addComment', 'cancelEditAction'])
 
 const commentAction = () => {
 	isEmptyComment.value = false
@@ -42,6 +43,11 @@ const commentAction = () => {
 		isTaskResult.value = false
 	} else {
 		isEmptyComment.value = true
+		disableButton.value = true
+		setTimeout(() => {
+			isEmptyComment.value = false
+			disableButton.value = false
+		}, 2000)
 	}
 }
 
@@ -77,7 +83,14 @@ watch(commentText, newVal =>
 				label="отметить как результат"
 				class="cursor-pointer hover:opacity-70 transition-all"
 			/>
-			<UButton :loading="props.loading" @click="commentAction">
+			<UButton v-if="isEditAction" @click="emit('cancelEditAction')">
+				Отмена
+			</UButton>
+			<UButton
+				:loading="props.loading"
+				@click="commentAction"
+				:disabled="disableButton"
+			>
 				{{ isEditAction ? 'Изменить комментарий' : 'Добавить комментарий' }}
 			</UButton>
 		</div>

@@ -68,7 +68,11 @@ const isOwner = (commentID: string, authorID: string): Boolean => {
 					<span class="comment__date text-sm opacity-50">{{
 						dateFormatter(comment.$createdAt)
 					}}</span>
-					<div v-if="isOwner(comment.author, authStore.getID) && !isResult">
+					<div
+						v-if="
+							isOwner(comment.author, authStore.getID) && !comment.taskResult
+						"
+					>
 						<Icon
 							@click="action(comment, 'del')"
 							name="material-symbols:delete-outline-sharp"

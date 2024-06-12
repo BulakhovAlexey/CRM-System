@@ -12,7 +12,7 @@ const emits = defineEmits(['closeModal'])
 const selectedTaskStore = useSelectedTaskStore()
 const task: ITask = selectedTaskStore.getTask
 const { date, format, startTime } = useDatePickerConfig()
-const isEditActionStore = useIsEditTaskAction()
+const editActionStore = useIsEditTaskAction()
 
 const {
 	name,
@@ -56,7 +56,7 @@ const closeModal = () => {
 			<div class="create-task__top">
 				<h3 class="create-task text-center flex-1 text-lg text-white">
 					{{
-						isEditActionStore.isEditAction
+						editActionStore.isEditAction
 							? 'Редактировать задачу'
 							: 'Создать задачу'
 					}}
@@ -136,7 +136,7 @@ const closeModal = () => {
 				:loading="updating || creating"
 				type="submit"
 				class="justify-center"
-				>{{ isEditActionStore.isEditAction ? 'Сохранить' : 'Создать' }}
+				>{{ editActionStore.isEditAction ? 'Сохранить' : 'Создать' }}
 			</UButton>
 		</UForm>
 	</UCard>
