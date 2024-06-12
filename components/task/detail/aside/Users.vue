@@ -37,20 +37,36 @@ const getLink = ($id: string): string => {
 </script>
 
 <template>
-	<div class="aside__task-owner opacity-80">Постановщик</div>
-	<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
-	<NuxtLink v-else class="mb-2 link" :to="getLink(task.owner)">
-		{{ getUserLabel(task.owner).name }}
-		<span class="text-xs opacity-50">
-			({{ getUserLabel(task.owner).position }})
-		</span>
-	</NuxtLink>
-	<div class="aside__task-executor opacity-80">Исполнитель</div>
-	<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
-	<NuxtLink v-else class="link" :to="getLink(task.executor)">
-		{{ getUserLabel(task.executor).name }}
-		<span class="text-xs opacity-50">
-			({{ getUserLabel(task.executor).position }})
-		</span>
-	</NuxtLink>
+	<div class="flex flex-col gap-1">
+		<div class="aside__task-owner opacity-80">Постановщик</div>
+		<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
+		<NuxtLink
+			v-else
+			class="mb-2 link p-1 border rounded"
+			:to="getLink(task.owner)"
+		>
+			{{ getUserLabel(task.owner).name }}
+			<span class="text-xs opacity-50">
+				({{ getUserLabel(task.owner).position }})
+			</span>
+		</NuxtLink>
+		<div class="aside__task-executor opacity-80">Исполнитель</div>
+		<USkeleton v-if="loading" class="w-[200px] h-[25px]" />
+		<NuxtLink
+			v-else
+			class="link p-1 border rounded"
+			:to="getLink(task.executor)"
+		>
+			{{ getUserLabel(task.executor).name }}
+			<span class="text-xs opacity-50">
+				({{ getUserLabel(task.executor).position }})
+			</span>
+		</NuxtLink>
+	</div>
 </template>
+
+<style scoped>
+.link {
+	@apply hover:opacity-60 transition-all;
+}
+</style>
