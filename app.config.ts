@@ -12,7 +12,7 @@ export default defineAppConfig({
 		},
 		notification: {
 			default: {
-				color: 'red',
+				color: 'blue',
 				icon: 'i-heroicons-exclamation-triangle',
 			},
 		},

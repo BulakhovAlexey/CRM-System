@@ -5,7 +5,9 @@
 		<UDivider label="Email" :orientation="dividerOrientation" />
 		<UserProfileChangeEmail />
 		<UDivider label="Пароль" :orientation="dividerOrientation" />
-		<!-- todo  UserProfileChangePassword -->
+		<UserProfileChangePassword />
+		<UDivider label="Фон" :orientation="dividerOrientation" />
+		<UserProfileChangeBackGround />
 	</div>
 </template>
 <script setup lang="ts">

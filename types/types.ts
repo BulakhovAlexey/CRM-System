@@ -96,3 +96,8 @@ export interface ITableColumn {
 	label?: string
 	sortable?: boolean
 }
+
+export interface IFile {
+	$id: string
+	path: string
+}
