@@ -26,7 +26,7 @@ const props = defineProps({
 
 <style scoped>
 .item{
-	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all
+	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all bg-slate-200
 }
 
 </style>

@@ -14,10 +14,10 @@ const closeModal = () => {
 		<Icon
 			name="radix-icons:plus-circled"
 			size="20"
-			class="create-task__add-icon"
+			class="create-task__add-icon text-slate-700"
 		/>
 		<span
-			class="create-task__add-text text-nowrap inline-block overflow-hidden w-0 transition-all duration-300"
+			class="create-task__add-text text-slate-700 text-nowrap inline-block overflow-hidden w-0 transition-all duration-300"
 			>Создать задачу</span
 		>
 	</div>
@@ -35,4 +35,5 @@ const closeModal = () => {
 	opacity: 1;
 	transition: all 0.4s ease 0s;
 }
+
 </style>

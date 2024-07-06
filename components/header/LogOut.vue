@@ -18,7 +18,7 @@ const logOut = async () => {
 
 <template>
 	<div class="header__logOut">
-		<button class="transition-colors hover:text-textMain">
+		<button class="transition-colors hover:opacity-50">
 			<Icon name="line-md:log-out" @click="logOut" size="26" />
 		</button>
 	</div>

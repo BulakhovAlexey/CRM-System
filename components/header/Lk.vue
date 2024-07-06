@@ -15,7 +15,7 @@ const items = [
 
 <template>
 	<div class="header__lk">
-		<button class="transition-colors hover:text-textMain">
+		<button class="transition-colors hover:opacity-50">
 			<Icon
 				name="line-md:account"
 				@click="sideBarIsOpen = !sideBarIsOpen"
