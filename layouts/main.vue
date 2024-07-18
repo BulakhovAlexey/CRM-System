@@ -53,6 +53,7 @@ onMounted(() => updateBgImage())
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
+	overflow: hidden;
 }
 .test {
 	@apply bg-white bg-opacity-20;

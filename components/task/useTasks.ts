@@ -48,59 +48,54 @@ export function useTasks() {
 		return date1 >= firstDayOfWeek && date1 <= lastDayOfWeek
 	}
 
+	const SortDataByDate = function (tasks: ITask[]) {
+		const currentDate = new Date()
+		const tomorrowDate = new Date(currentDate)
+		tomorrowDate.setDate(tomorrowDate.getDate() + 1)
+		const newBoard: IColumnTask[] = taskColumns.map(column => ({
+			...column,
+			items: [],
+		}))
+		tasks.forEach(task => {
+			let taskDate = new Date(task.end_date)
+			if (taskDate < currentDate) {
+				const column = newBoard.find(col => col.id == EnumColumnsCode.overdue)
+				if (column) {
+					column.items.push(makeTaskFields(task))
+				}
+			} else if (isToday(taskDate, currentDate)) {
+				const column = newBoard.find(col => col.id == EnumColumnsCode.today)
+				if (column) {
+					column.items.push(makeTaskFields(task))
+				}
+			}
+			// на этой неделе
+			else if (isThisWeek(taskDate, currentDate)) {
+				//условие
+				const column = newBoard.find(col => col.id == EnumColumnsCode.this_week)
+				if (column) {
+					column.items.push(makeTaskFields(task))
+				}
+			} else {
+				// на следующей неделе
+				const column = newBoard.find(col => col.id == EnumColumnsCode.next_week)
+				if (column) {
+					column.items.push(makeTaskFields(task))
+				}
+			}
+		})
+		return newBoard
+	}
+
 	const getBoard = () =>
 		useQuery({
 			queryKey: ['get_Tasks'],
 			queryFn: () => DB.listDocuments(DB_ID, COLLECTION_TASKS),
 			select(data) {
-				const currentDate = new Date()
-				const tomorrowDate = new Date(currentDate)
-				tomorrowDate.setDate(tomorrowDate.getDate() + 1)
-
-				const newBoard: IColumnTask[] = taskColumns.map(column => ({
-					...column,
-					items: [],
-				}))
-
 				const tasks = data.documents as unknown as ITask[]
-				tasks.forEach(task => {
-					let taskDate = new Date(task.end_date)
-					if (taskDate < currentDate) {
-						const column = newBoard.find(
-							col => col.id == EnumColumnsCode.overdue
-						)
-						if (column) {
-							column.items.push(makeTaskFields(task))
-						}
-					} else if (isToday(taskDate, currentDate)) {
-						const column = newBoard.find(col => col.id == EnumColumnsCode.today)
-						if (column) {
-							column.items.push(makeTaskFields(task))
-						}
-					}
-					// на этой неделе
-					else if (isThisWeek(taskDate, currentDate)) {
-						//условие
-						const column = newBoard.find(
-							col => col.id == EnumColumnsCode.this_week
-						)
-						if (column) {
-							column.items.push(makeTaskFields(task))
-						}
-					} else {
-						// на следующей неделе
-						const column = newBoard.find(
-							col => col.id == EnumColumnsCode.next_week
-						)
-						if (column) {
-							column.items.push(makeTaskFields(task))
-						}
-					}
-				})
-				return newBoard
+				return SortDataByDate(tasks)
 			},
 		})
-
 	return {
 		getBoard,
 	}

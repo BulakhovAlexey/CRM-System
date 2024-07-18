@@ -10,14 +10,9 @@ const props = defineProps({
 </script>
 
 <template>
-	<div class="task-column__body px-2 flex-1">
+	<div class="task-column__body px-2">
 		<div class="task-column__items flex flex-col gap-4">
-			<div
-				class="item"
-				draggable="true"
-				v-for="task in tasks"
-				:key="task.$id"
-			>
+			<div class="item" draggable="true" v-for="task in tasks" :key="task.$id">
 				<TaskItem :task="task" />
 			</div>
 		</div>
@@ -25,8 +20,14 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.item{
-	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all bg-slate-200
+.task-column__body {
+	flex: 0 1 calc(100vh - 245px);
+	overflow-y: auto;
 }
-
+.task-column__items {
+	@apply h-full overflow-auto;
+}
+.item {
+	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all bg-slate-200;
+}
 </style>

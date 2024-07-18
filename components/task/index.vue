@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { IColumnTask, IUser } from '~/types/types'
+import type { IColumnTask, ITask, IUser } from '~/types/types'
+import { EnumStatus } from '~/types/types'
 import { useTasks } from './useTasks'
 import { useNeedUpdateTasksBoard } from '~/stores/task.store'
 
@@ -21,12 +22,20 @@ onMounted(async () => {
 
 provide('users', users)
 provide('loading', loading)
+
+const filterStatus = ref<EnumStatus | 'все'>(EnumStatus.in_process)
+
+const filterTasks = (tasks: ITask[]) => {
+	if (filterStatus.value === 'все') return tasks
+	return tasks.filter(task => task.status === filterStatus.value)
+}
 </script>
 
 <template>
 	<TransitionGroup name="appear">
 		<LoadingContainer v-if="isFetching" />
 		<div v-else class="tasks">
+			<TaskFilter v-model="filterStatus" />
 			<div class="tasks__columns grid grid-cols-4 min-h-full">
 				<div
 					v-for="column in (data as IColumnTask[])"
@@ -35,7 +44,7 @@ provide('loading', loading)
 				>
 					<TaskColumnTitle :column="column" />
 					<TaskCreateModal />
-					<TaskList :tasks="column.items" />
+					<TaskList :tasks="filterTasks(column.items)" />
 				</div>
 			</div>
 		</div>
@@ -44,7 +53,8 @@ provide('loading', loading)
 
 <style scoped>
 .task-column {
-	min-height: calc(100vh - 64px - 24px);
+	min-height: calc(100vh - 64px - 24px - 56px);
+	overflow-y: hidden;
 }
 .task-column {
 	border-right: 0.5px solid gray;
