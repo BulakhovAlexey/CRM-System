@@ -3,10 +3,12 @@ import type { IColumnTask, ITask, IUser } from '~/types/types'
 import { EnumStatus } from '~/types/types'
 import { useTasks } from './useTasks'
 import { useNeedUpdateTasksBoard } from '~/stores/task.store'
+import { useAuthStore } from '@/stores/auth.store'
 
 const { getBoard } = useTasks()
 const { data, isFetching, refetch } = getBoard()
 const needUpdateTasksBoard = useNeedUpdateTasksBoard()
+const authStore = useAuthStore()
 
 needUpdateTasksBoard.$onAction(({ after }) => {
 	after(result => refetch())
@@ -24,10 +26,24 @@ provide('users', users)
 provide('loading', loading)
 
 const filterStatus = ref<EnumStatus | 'все'>(EnumStatus.in_process)
+const showMyTasks = ref<Boolean>(true)
+
+provide('showMyTasks', showMyTasks)
 
 const filterTasks = (tasks: ITask[]) => {
-	if (filterStatus.value === 'все') return tasks
-	return tasks.filter(task => task.status === filterStatus.value)
+	let filteredTasks: ITask[] = tasks
+	if (showMyTasks.value) {
+		filteredTasks = filteredTasks.filter(
+			task => task.executor === authStore.getID
+		)
+	}
+	if (filterStatus.value !== 'все') {
+		filteredTasks = filteredTasks.filter(
+			task => task.status === filterStatus.value
+		)
+	}
+
+	return filteredTasks
 }
 </script>
 

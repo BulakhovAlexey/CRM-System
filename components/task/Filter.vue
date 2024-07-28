@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { EnumStatus } from '~/types/types'
 
-const filterStatus = defineModel()
+const filterStatus = defineModel({ type: String })
+const showMyTasks = inject('showMyTasks') as Ref<boolean>
 
 const options = [
 	'все',
@@ -12,14 +13,17 @@ const options = [
 </script>
 
 <template>
-	<div class="pb-2 max-w-[150px] text-center">
-		<UFormGroup label="Статус задач" size="sm">
-			<USelectMenu
-				v-model="filterStatus"
-				:options="options"
-				placeholder="Select status"
-			/>
-		</UFormGroup>
+	<div class="pb-2 text-center flex items-center gap-10">
+		<USelectMenu
+			class="max-w-[150px] w-full"
+			v-model="filterStatus"
+			:options="options"
+			placeholder="Select status"
+		/>
+		<div class="toggle flex items-center gap-2">
+			<div class="cursor-pointer" @click="showMyTasks = !showMyTasks">Мои</div>
+			<UToggle size="sm" v-model="showMyTasks" />
+		</div>
 	</div>
 </template>
 
