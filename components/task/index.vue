@@ -26,13 +26,14 @@ provide('users', users)
 provide('loading', loading)
 
 const filterStatus = ref<EnumStatus | 'все'>(EnumStatus.in_process)
-const showMyTasks = ref<Boolean>(true)
+const showOwnTasks = ref<Boolean>(true)
 
-provide('showMyTasks', showMyTasks)
+provide('showOwnTasks', showOwnTasks)
+provide('filterStatus', filterStatus)
 
 const filterTasks = (tasks: ITask[]) => {
 	let filteredTasks: ITask[] = tasks
-	if (showMyTasks.value) {
+	if (showOwnTasks.value) {
 		filteredTasks = filteredTasks.filter(
 			task => task.executor === authStore.getID
 		)
@@ -51,14 +52,17 @@ const filterTasks = (tasks: ITask[]) => {
 	<TransitionGroup name="appear">
 		<LoadingContainer v-if="isFetching" />
 		<div v-else class="tasks">
-			<TaskFilter v-model="filterStatus" />
+			<TaskFilter />
 			<div class="tasks__columns grid grid-cols-4 min-h-full">
 				<div
 					v-for="column in (data as IColumnTask[])"
 					:key="column.id"
 					class="task-column text-center flex flex-col"
 				>
-					<TaskColumnTitle :column="column" />
+					<TaskColumnTitle
+						:column="column"
+						:columnTasksLength="filterTasks(column.items).length"
+					/>
 					<TaskCreateModal />
 					<TaskList :tasks="filterTasks(column.items)" />
 				</div>

@@ -6,19 +6,23 @@ const props = defineProps({
 		type: Object as PropType<IColumnTask>,
 		required: true,
 	},
+	columnTasksLength: {
+		type: Number,
+		default: 0,
+	},
 })
 </script>
 
 <template>
-	<div class="task-column__title" :class="column.color">
-		{{ column.label }}({{ column.items.length }})
+	<div
+		class="border rounded-md border-cyan-800 py-1 mb-3 mx-1 bg-opacity-55"
+		:class="column.color"
+	>
+		{{ column.label }}({{ columnTasksLength }})
 	</div>
 </template>
 
 <style scoped>
-.task-column__title {
-	@apply border rounded-md border-cyan-800 py-1 mb-3 mx-1 bg-opacity-55;
-}
 .red {
 	@apply bg-red-400;
 }
