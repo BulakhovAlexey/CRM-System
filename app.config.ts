@@ -15,6 +15,7 @@ export default defineAppConfig({
 				color: 'blue',
 				icon: 'i-heroicons-exclamation-triangle',
 			},
+			base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-auto disabled:opacity-75 flex-shrink-0',
 		},
 		button: {
 			default: {

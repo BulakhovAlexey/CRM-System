@@ -9,7 +9,6 @@ const FSloading = useFSloadingStore()
 onMounted(async () => {
   try {
     const user = await account.get()
-    console.log(user);
     if(user) authStore.set(user)
   } catch (error) {
   } finally {

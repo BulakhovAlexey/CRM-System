@@ -32,8 +32,13 @@ const closeModal = () => {
 .create-task__add:hover > .create-task__add-text {
 	width: 130px;
 	overflow: auto;
-	opacity: 1;
+	opacity: 0.8;
 	transition: all 0.4s ease 0s;
 }
 
+.create-task__add:hover > .create-task__add-icon {
+	transform: scale(1.2);
+	opacity: 0.8;
+	transition: all 0.4s ease 0s;
+}
 </style>
