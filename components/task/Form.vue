@@ -11,7 +11,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const emits = defineEmits(['closeModal'])
 const selectedTaskStore = useSelectedTaskStore()
 const task: ITask = selectedTaskStore.getTask
-const { date, format, startTime } = useDatePickerConfig()
+const { format } = useDatePickerConfig()
 const editActionStore = useIsEditTaskAction()
 
 const {
@@ -19,8 +19,12 @@ const {
 	nameAttrs,
 	description,
 	descriptionAttrs,
-	executorRef,
-	groupRef,
+	executorID,
+	executorIDAttrs,
+	groupID,
+	groupIDAttrs,
+	date,
+	dateAttrs,
 	errors,
 	createTask,
 	meta,
@@ -28,7 +32,7 @@ const {
 	updating,
 	created,
 	updated,
-} = useCreateTask(date)
+} = useCreateTask()
 
 const { getGroupsListSelector } = useGroupList()
 
@@ -98,42 +102,57 @@ const closeModal = () => {
 					:message="errors.description"
 				/>
 			</UFormGroup>
-			<UFormGroup required label="Группа" size="lg">
+			<UFormGroup required label="Группа" name="group" size="lg">
 				<USkeleton v-if="isFetching" class="w-full h-[40px]" />
 				<USelectMenu
 					v-else
-					v-model="groupRef"
+					v-model="groupID"
+					v-bind="groupIDAttrs"
 					class="cursor-pointer"
 					:options="(groups as unknown as IGroup[])"
 					placeholder="Выберите группу"
 					value-attribute="id"
 					option-attribute="label"
 				/>
+				<UIAppearMessage
+					:condition="errors.group !== undefined && errors.group.length > 0"
+					:message="errors.group"
+				/>
 			</UFormGroup>
-			<UFormGroup required label="Исполнитель" size="lg">
-				<!-- <USkeleton v-if="pending" class="w-full h-[40px]" /> -->
+			<UFormGroup required label="Исполнитель" name="executor" size="lg">
 				<USelectMenu
-					v-model="executorRef"
+					v-model="executorID"
+					v-bind="executorIDAttrs"
 					class="cursor-pointer"
 					:options="(executors as Executor[])"
 					placeholder="Выберите исполнителя"
 					value-attribute="id"
 					option-attribute="label"
 				/>
+				<UIAppearMessage
+					:condition="
+						errors.executor !== undefined && errors.executor.length > 0
+					"
+					:message="errors.executor"
+				/>
 			</UFormGroup>
-			<UFormGroup required label="Дата готовности" name="end_date" size="lg">
+			<UFormGroup required label="Дата готовности" name="date" size="lg">
 				<VueDatePicker
-					no-minutes-overlay
 					placeholder="Выберите дату"
-					:enable-minutes="false"
 					v-model="date"
+					v-bind="dateAttrs"
+					:disabled-week-days="[6, 0]"
 					:format="format"
 					:day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
 				/>
-				<!-- :disabled-week-days="[6, 0]"  -->
+				<UIAppearMessage
+					:condition="errors.date !== undefined && errors.date.length > 0"
+					:message="errors.date"
+				/>
 			</UFormGroup>
 			<UButton
 				:loading="updating || creating"
+				:disabled="!meta.valid"
 				type="submit"
 				class="justify-center"
 				>{{ editActionStore.isEditAction ? 'Сохранить' : 'Создать' }}

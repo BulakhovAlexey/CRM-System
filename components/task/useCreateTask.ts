@@ -5,6 +5,7 @@ import { DB_ID, COLLECTION_TASKS } from '~/DbConstants'
 import { v4 as uuid } from 'uuid'
 import { useForm } from 'vee-validate'
 import { useMutation } from '@tanstack/vue-query'
+import { taskSchema } from '@/lib/schema.validate'
 import {
 	useAuthStore,
 	useSelectedTaskStore,
@@ -15,7 +16,7 @@ import {
 	useIsEditTaskAction,
 } from '~/stores/task.store'
 
-export function useCreateTask(date: Ref<Date | undefined>) {
+export function useCreateTask() {
 	const selectedTaskStore = useSelectedTaskStore()
 	const updateModalStore = useTaskUpdateModalStore()
 	const task: ITask = selectedTaskStore.getTask
@@ -32,25 +33,21 @@ export function useCreateTask(date: Ref<Date | undefined>) {
 		handleSubmit,
 		isSubmitting,
 	} = useForm({
-		//validationSchema: loginSchema.pick(['email', 'password'])
+		validationSchema: taskSchema,
 	})
-
-	//const successMesRef = ref<string>('')
-	//const errorMesRef = ref<string>('')
-	//const isSuccess = ref<boolean>(false)
-
-	const executorRef = ref<string>('')
-	const groupRef = ref<string>('')
 
 	const [name, nameAttrs] = defineField('name')
 	const [description, descriptionAttrs] = defineField('description')
+	const [groupID, groupIDAttrs] = defineField('group')
+	const [executorID, executorIDAttrs] = defineField('executor')
+	const [date, dateAttrs] = defineField('date')
 
 	if (isEditActionStore.isEditAction) {
 		setFieldValue('name', task.task_name)
 		setFieldValue('description', task.description)
-		executorRef.value = task.executor
-		groupRef.value = task.groups.$id
-		date.value = new Date(task.end_date)
+		setFieldValue('group', task.groups.$id)
+		setFieldValue('executor', task.executor)
+		setFieldValue('date', new Date(task.end_date))
 	}
 
 	const {
@@ -63,15 +60,16 @@ export function useCreateTask(date: Ref<Date | undefined>) {
 			DB.createDocument(DB_ID, COLLECTION_TASKS, uuid(), {
 				task_name: name.value,
 				description: description.value,
-				groups: groupRef.value,
+				groups: groupID.value,
 				start_date: new Date(),
 				end_date: date.value,
-				executor: executorRef.value,
+				executor: executorID.value,
 				owner: authStore.getID,
 				status: EnumStatus.in_process,
 			}),
 		onSuccess: () => {
 			needUpdateTasksBoard.set(true)
+			isEditActionStore.set(false)
 		},
 	})
 
@@ -85,10 +83,10 @@ export function useCreateTask(date: Ref<Date | undefined>) {
 			DB.updateDocument(DB_ID, COLLECTION_TASKS, task.$id, {
 				task_name: name.value,
 				description: description.value,
-				groups: groupRef.value,
+				groups: groupID.value,
 				start_date: new Date(),
 				end_date: date.value,
-				executor: executorRef.value,
+				executor: executorID.value,
 				owner: authStore.getID,
 			}),
 		onSuccess: () => {
@@ -98,17 +96,21 @@ export function useCreateTask(date: Ref<Date | undefined>) {
 		},
 	})
 
-	const createTask = handleSubmit(async () =>
+	const createTask = handleSubmit(async values => {
 		isEditActionStore.isEditAction ? update() : create()
-	)
+	})
 
 	return {
 		name,
 		nameAttrs,
 		description,
 		descriptionAttrs,
-		executorRef,
-		groupRef,
+		executorID,
+		executorIDAttrs,
+		groupID,
+		groupIDAttrs,
+		date,
+		dateAttrs,
 		errors,
 		meta,
 		isSubmitting,

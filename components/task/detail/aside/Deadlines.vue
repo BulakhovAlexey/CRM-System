@@ -13,19 +13,24 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	endDate: {
+	date: {
 		type: String,
 		required: true,
 	},
 })
 
-const { date, format, startTime } = useDatePickerConfig()
-const { mutate: updateDeadLine, taskID, isPending } = useDeadLineChanges(date)
+const { format } = useDatePickerConfig()
+const {
+	mutate: updateDeadLine,
+	endDate,
+	taskID,
+	isPending,
+} = useDeadLineChanges()
 
-watch(date, (date, prevDate) => {
+const changeDeadLineDate = () => {
 	taskID.value = props.taskId
-	date !== undefined ? updateDeadLine() : false
-})
+	updateDeadLine()
+}
 </script>
 
 <template>
@@ -37,9 +42,10 @@ watch(date, (date, prevDate) => {
 		<Transition name="appear">
 			<VueDatePicker
 				v-if="!isPending"
-				:placeholder="dateFormatter(props.endDate)"
-				:enable-minutes="true"
-				v-model="date"
+				:disabled-week-days="[6, 0]"
+				:placeholder="dateFormatter(props.date)"
+				v-model="endDate"
+				@update:model-value="changeDeadLineDate"
 				:format="format"
 				:day-names="['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']"
 			/>

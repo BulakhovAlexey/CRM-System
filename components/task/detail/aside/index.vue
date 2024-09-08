@@ -15,7 +15,7 @@ const props = defineProps({
 		<TaskDetailAsideDeadlines
 			:taskId="task.$id"
 			:created="task.$createdAt"
-			:endDate="task.end_date"
+			:date="task.end_date"
 		/>
 		<div class="aside__users p-2">
 			<TaskDetailAsideUsers :task="task" />
