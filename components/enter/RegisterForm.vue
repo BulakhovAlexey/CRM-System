@@ -6,7 +6,6 @@ import { text } from './enter.lang'
 const emit = defineEmits(['rotating'])
 const {
 	register,
-	roleRef,
 	errorMessage,
 	meta,
 	email,
@@ -15,9 +14,11 @@ const {
 	passwordAttrs,
 	name,
 	nameAttrs,
+	roleRef,
+	roleRefAttrs,
 	isSubmitting,
 	errors,
-} = useAuth()
+} = useAuth(true)
 
 const rotate = () => {
 	emit('rotating')
@@ -65,20 +66,30 @@ const rotate = () => {
 				:message="errors.password"
 			/>
 		</UFormGroup>
-		<UFormGroup required :label="text.labels.role.label" size="lg">
+		<UFormGroup
+			required
+			:label="text.labels.role.label"
+			name="roleRef"
+			size="lg"
+		>
 			<USelectMenu
 				v-model="roleRef"
+				v-bind="roleRefAttrs"
 				class="cursor-pointer"
 				:options="roles"
 				:placeholder="text.labels.role.placeholder"
 				value-attribute="id"
 				option-attribute="role"
 			/>
+			<UIAppearMessage
+				:condition="errors.roleRef !== undefined && errors.roleRef.length > 0"
+				:message="errors.roleRef"
+			/>
 		</UFormGroup>
 		<div class="buttons flex justify-center gap-3">
 			<UButton
 				trailing
-				:disabled="!meta.touched"
+				:disabled="!meta.valid"
 				:loading="isSubmitting"
 				type="submit"
 				class="uppercase"

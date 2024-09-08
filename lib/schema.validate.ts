@@ -10,7 +10,20 @@ export const loginSchema = yup.object({
 		.min(8, 'Не менее 8 символов')
 		.max(15, 'Серьезно?! Не более 15!!')
 		.required('Обязательное поле'),
-	//name: yup.string().required('Обязательное поле'),
+})
+
+export const registerSchema = yup.object({
+	email: yup
+		.string()
+		.required('Обязательное поле')
+		.email('Введите валидный email'),
+	password: yup
+		.string()
+		.min(8, 'Не менее 8 символов')
+		.max(15, 'Серьезно?! Не более 15!!')
+		.required('Обязательное поле'),
+	name: yup.string().required('Обязательное поле'),
+	roleRef: yup.string().required('Обязательное поле'),
 })
 
 export const groupSchema = yup.object({
