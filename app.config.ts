@@ -22,6 +22,9 @@ export default defineAppConfig({
 				size: 'md',
 			},
 		},
+		table: {
+			base: 'bg-slate-200 bg-opacity-80 rounded',
+		},
 		formGroup: {
 			label: {
 				wrapper: 'flex content-center items-center justify-between',

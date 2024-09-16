@@ -22,7 +22,10 @@ export const registerSchema = yup.object({
 		.min(8, 'Не менее 8 символов')
 		.max(15, 'Серьезно?! Не более 15!!')
 		.required('Обязательное поле'),
-	name: yup.string().required('Обязательное поле'),
+	name: yup
+		.string()
+		.required('Обязательное поле')
+		.min(3, 'Не менее 3 символов'),
 	roleRef: yup.string().required('Обязательное поле'),
 })
 

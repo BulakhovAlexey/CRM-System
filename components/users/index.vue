@@ -25,7 +25,9 @@ const { data: list, pending } = await useAsyncData('users', () =>
 <template>
 	<LoadingContainer v-if="pending" />
 	<div v-else class="user-list">
-		<UISearch v-model="searchValue" />
+		<div class="user-list__top py-3">
+			<UISearch v-model="searchValue" />
+		</div>
 		<UISortableTable
 			:searchValue="searchValue"
 			:data="(list as IUserCell[])"

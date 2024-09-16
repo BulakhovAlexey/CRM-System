@@ -136,6 +136,6 @@ const filteredRows = computed(() => {
 
 <style scoped>
 .group__top {
-	@apply flex justify-between items-center gap-2 cursor-pointer px-3 py-3.5 border-b border-gray-200 dark:border-gray-700;
+	@apply flex justify-between items-center gap-2 cursor-pointer py-3.5 border-b border-gray-200 dark:border-gray-700;
 }
 </style>
