@@ -18,8 +18,7 @@ export function useChangeEmail() {
 	})
 
 	const store = useAuthStore()
-	const successMesRef = ref<string>('')
-	const errorMesRef = ref<string>('')
+	const messageRef = ref<string>('')
 	const isSuccess = ref<boolean>(false)
 
 	const [email, emailAttrs] = defineField('email')
@@ -31,22 +30,26 @@ export function useChangeEmail() {
 		mutationKey: ['update_email'],
 		mutationFn: () => account.updateEmail(email.value, password.value),
 		onSuccess: () => {
-			errorMesRef.value = ''
-			successMesRef.value = 'Email успешно изменен'
+			messageRef.value = 'Email успешно изменен'
 			isSuccess.value = true
 			store.setEmail(email.value)
-			password.value = ''
-			setTimeout(() => {
-				successMesRef.value = ''
-			}, 2000)
 		},
 		onError(error) {
-			errorMesRef.value = error.message
+			messageRef.value = error.message
+			isSuccess.value = false
 		},
 	})
 
+	const showError = () => {
+		messageRef.value = 'Поле не изменено'
+		isSuccess.value = false
+	}
+
 	const updateEmail = handleSubmit(async values => {
-		mutate()
+		values.email === store.getEmail ? showError() : mutate()
+		setTimeout(() => {
+			messageRef.value = ''
+		}, 2500)
 	})
 
 	return {
@@ -57,8 +60,7 @@ export function useChangeEmail() {
 		errors,
 		meta,
 		isSubmitting,
-		successMesRef,
-		errorMesRef,
+		messageRef,
 		isSuccess,
 		updateEmail,
 	}

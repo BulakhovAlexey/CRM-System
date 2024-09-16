@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/vue-query'
 import { account } from '~/lib/appwrite'
 import { useForm } from 'vee-validate'
-import { loginSchema } from '@/lib/schema.validate'
+import { registerSchema } from '@/lib/schema.validate'
 import { useAuthStore } from '@/stores/auth.store'
 
 export function useChangeName() {
@@ -14,12 +14,12 @@ export function useChangeName() {
 		handleSubmit,
 		isSubmitting,
 	} = useForm({
-		// validationSchema: loginSchema.pick(['name']),
-		//validationSchema: loginSchema
+		validationSchema: registerSchema.pick(['name']),
 	})
 
 	const store = useAuthStore()
-	const successMesRef = ref<string>('')
+	const messageRef = ref<string>('')
+	const isSuccess = ref<boolean>(false)
 
 	const [name, nameAttrs] = defineField('name')
 
@@ -29,16 +29,25 @@ export function useChangeName() {
 		mutationKey: ['update_name'],
 		mutationFn: () => account.updateName(name.value),
 		onSuccess: () => {
-			successMesRef.value = 'Имя успешно изменено'
-			setTimeout(() => {
-				successMesRef.value = ''
-			}, 2000)
+			store.setName(name.value)
+			isSuccess.value = true
+			messageRef.value = 'Имя успешно изменено'
+		},
+		onError: () => {
+			isSuccess.value = false
 		},
 	})
 
+	const showError = () => {
+		messageRef.value = 'Поле не изменено..'
+		isSuccess.value = false
+	}
+
 	const updateName = handleSubmit(async values => {
-		mutate()
-		store.setName(name.value)
+		values.name === store.getName ? showError() : mutate()
+		setTimeout(() => {
+			messageRef.value = ''
+		}, 2000)
 	})
 
 	return {
@@ -47,7 +56,8 @@ export function useChangeName() {
 		errors,
 		meta,
 		isSubmitting,
-		successMesRef,
+		messageRef,
+		isSuccess,
 		updateName,
 	}
 }

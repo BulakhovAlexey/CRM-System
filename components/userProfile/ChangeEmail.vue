@@ -1,23 +1,34 @@
 <script setup lang="ts">
 import { useChangeEmail } from './useChangeEmail'
 
+const props = defineProps({
+	dividerOrientation: {
+		type: String as PropType<'horizontal' | 'vertical'>,
+		default: 'horizontal',
+	},
+})
+
 const {
 	email,
 	emailAttrs,
 	password,
 	passwordAttrs,
 	errors,
-	errorMesRef,
 	isSubmitting,
 	meta,
-	successMesRef,
+	messageRef,
 	isSuccess,
 	updateEmail,
 } = useChangeEmail()
 </script>
 
 <template>
-	<UForm :state="{}" @submit="updateEmail" class="flex flex-col gap-2">
+	<UDivider
+		class="mt-4"
+		label="Email"
+		:orientation="props.dividerOrientation"
+	/>
+	<UForm :state="{}" @submit="updateEmail" class="flex flex-col gap-5">
 		<UFormGroup required label="Email" name="email" size="lg">
 			<UInput v-model="email" v-bind="emailAttrs" type="text" />
 			<UIAppearMessage
@@ -25,18 +36,16 @@ const {
 				:message="errors.email"
 			/>
 		</UFormGroup>
-		<!-- todo hide pass filed after success submit -->
-		<UFormGroup
-			v-if="meta.touched || (meta.touched && !isSuccess)"
-			required
-			label="Пароль"
-			name="password"
-			size="lg"
-		>
+		<UFormGroup required label="Пароль" name="password" size="lg">
 			<UInput v-model="password" v-bind="passwordAttrs" type="password" />
 			<UIAppearMessage
 				:condition="errors.password !== undefined && errors.password.length > 0"
 				:message="errors.password"
+			/>
+			<UIAppearMessage
+				:color="isSuccess ? 'text-green-600' : 'text-red-600'"
+				:condition="messageRef.length > 0"
+				:message="messageRef"
 			/>
 		</UFormGroup>
 		<UButton
@@ -46,14 +55,5 @@ const {
 			:loading="isSubmitting"
 			>Изменить email</UButton
 		>
-		<UIAppearMessage
-			color="text-green-600"
-			:condition="successMesRef.length > 0"
-			:message="successMesRef"
-		/>
-		<UIAppearMessage
-			:condition="errorMesRef.length > 0"
-			:message="errorMesRef"
-		/>
 	</UForm>
 </template>

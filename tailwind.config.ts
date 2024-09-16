@@ -1,6 +1,5 @@
 import { _opacity } from '#tailwind-config/theme/transitionProperty'
 import type { Config } from 'tailwindcss'
-import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default <Partial<Config>>{
 	theme: {
@@ -9,6 +8,9 @@ export default <Partial<Config>>{
 			serif: ['Merriweather', 'serif'],
 		},
 		extend: {
+			spacing: {
+				'vh-80': 'calc(100vh - 80px)',
+			},
 			borderRadius: {
 				none: '0',
 				sm: '.125rem',

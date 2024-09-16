@@ -3,14 +3,27 @@ const sideBarIsOpen = ref<boolean>(false)
 
 const items = [
 	{
-		slot: 'profile',
-		label: 'Профиль',
-	},
-	{
 		slot: 'tasks',
 		label: 'Задачи',
 	},
+	{
+		slot: 'changeName',
+		label: 'Изменить имя',
+	},
+	{
+		slot: 'changeEmail',
+		label: 'Изменить Email',
+	},
+	{
+		slot: 'changePassword',
+		label: 'Изменить пароль',
+	},
+	{
+		slot: 'changeBackGround',
+		label: 'Изменить фон',
+	},
 ]
+const dividerOrientation = 'horizontal'
 </script>
 
 <template>
@@ -24,17 +37,39 @@ const items = [
 		</button>
 	</div>
 
-	<USlideover v-model="sideBarIsOpen">
+	<USlideover v-model="sideBarIsOpen" :ui="{ width: 'w-screen max-w-[800px]' }">
 		<div class="p-4 flex-1 bg-gray-400">
-			<h3 class="text-center mb-4">Профиль</h3>
 			<UTabs :items="items">
-				<template #profile="{ item }">
-					<UserProfile />
+				<template #tasks="{ item }"> tasks </template>
+				<template #changeName="{ item }">
+					<div class="tab__inner">
+						<UserProfileChangeName :dividerOrientation="dividerOrientation" />
+					</div>
 				</template>
-				<template #tasks="{ item }"> Tasks </template>
+				<template #changeEmail="{ item }">
+					<div class="tab__inner">
+						<UserProfileChangeEmail :dividerOrientation="dividerOrientation" />
+					</div>
+				</template>
+				<template #changePassword="{ item }">
+					<div class="tab__inner">
+						<UserProfileChangePassword
+							:dividerOrientation="dividerOrientation"
+						/>
+					</div>
+				</template>
+				<template #changeBackGround="{ item }">
+					<UserProfileChangeBackGround
+						:dividerOrientation="dividerOrientation"
+					/>
+				</template>
 			</UTabs>
 		</div>
 	</USlideover>
 </template>
 
-<style scoped></style>
+<style scoped>
+.tab__inner {
+	@apply max-w-[450px] w-full my-auto mx-auto h-vh-80;
+}
+</style>
