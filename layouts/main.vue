@@ -1,25 +1,41 @@
 <script setup lang="ts">
 import { storage } from '~/lib/appwrite'
 import { storageID } from '~/DbConstants'
+import { Query } from 'appwrite'
 
-const bgImage = useCookie('bgImagePath', {
-	default: () => ({ bgImageID: '' }),
-	watch: true,
+const bgImageCookie = useCookie<string | undefined>('bgImagePath', {
+	maxAge: 1500000,
 })
 
+const bgImage = ref<string | undefined>(undefined)
+
+console.log(bgImageCookie.value)
+const getDefaultImage = async () => {
+	if (!bgImageCookie.value) {
+		const response = await storage.listFiles(storageID, [Query.limit(1)])
+		if (response.files[0]) {
+			bgImage.value = response.files[0].$id
+		}
+	} else {
+		bgImage.value = bgImageCookie.value
+	}
+}
 const bgUrl = ref<URL>()
 provide('bgImage', bgImage) // use it in /components/userProfile/ChangeBackGround.vue
 
 const updateBgImage = async () => {
-	if (bgImage.value.bgImageID != '') {
-		bgUrl.value = storage.getFileView(storageID, bgImage.value.bgImageID)
+	if (bgImage.value) {
+		bgUrl.value = storage.getFileView(storageID, bgImage.value)
 	}
 }
 watch(bgImage, newVal => {
 	updateBgImage()
 })
 
-onMounted(() => updateBgImage())
+onMounted(() => {
+	getDefaultImage()
+	updateBgImage()
+})
 </script>
 
 <template>

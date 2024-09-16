@@ -8,9 +8,9 @@ const props = defineProps({
 	},
 })
 
-const selectedBgImage = useCookie('bgImagePath', {
-	default: () => ({ bgImageID: '' }),
+const selectedBgImage = useCookie<string | undefined>('bgImagePath', {
 	watch: true,
+	maxAge: 1500000,
 })
 const emits = defineEmits(['bgActionEmit'])
 
@@ -19,32 +19,28 @@ const setBgAction = () => {
 }
 
 const isSelected = () => {
-	return selectedBgImage.value.bgImageID === props.image.$id
+	return selectedBgImage.value === props.image.$id
 }
 </script>
 
 <template>
-	<div class="item-image relative flex justify-center items-center">
-		<UTooltip
-			:text="isSelected() ? 'Уже выбран' : 'Установить как фон'"
-			:popper="{ offsetDistance: 2 }"
-		>
-			<img
-				:src="image.path"
-				@click="setBgAction"
-				:key="image.$id"
-				class="image"
-				:class="{ selected: isSelected() }"
-				:alt="image.$id"
-			/>
-		</UTooltip>
-	</div>
+	<UTooltip
+		class="h-[120px] w-[180px]"
+		:text="isSelected() ? 'Уже выбран' : 'Установить как фон'"
+		:popper="{ offsetDistance: 2 }"
+	>
+		<img
+			:src="image.path"
+			@click="setBgAction"
+			:key="image.$id"
+			class="w-full h-full absolute top-0 left-0 object-cover cursor-pointer"
+			:class="{ selected: isSelected() }"
+			:alt="image.$id"
+		/>
+	</UTooltip>
 </template>
 
 <style scoped>
-.image {
-	@apply max-w-[200px] h-auto block cursor-pointer;
-}
 .selected {
 	@apply pointer-events-none cursor-default;
 }
