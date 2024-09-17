@@ -20,6 +20,7 @@ export interface ITask extends IBaseFields {
 	owner: string
 	comments?: IComment[]
 	status: EnumStatus
+	isImportant: boolean
 }
 
 export interface IComment extends IBaseFields {

@@ -17,6 +17,8 @@ const editActionStore = useIsEditTaskAction()
 const {
 	name,
 	nameAttrs,
+	important,
+	importantAttrs,
 	description,
 	descriptionAttrs,
 	executorID,
@@ -77,7 +79,7 @@ const closeModal = () => {
 			<UFormGroup required label="Название" name="name" size="lg">
 				<UInput
 					autocomplete="off"
-					:autofocus="true"
+					:autofocus="false"
 					v-model="name"
 					immediate
 					v-bind="nameAttrs"
@@ -150,6 +152,22 @@ const closeModal = () => {
 					:message="errors.date"
 				/>
 			</UFormGroup>
+			<UCheckbox
+				name="important"
+				v-model="important"
+				v-bind="importantAttrs"
+				class="flex items-center"
+			>
+				<template #label>
+					<span class="cursor-pointer text-textMain mr-2"
+						>Это важная задача</span
+					>
+					<TaskImportantLabel
+						:important="true"
+						:color="important ? 'red' : 'white'"
+					/>
+				</template>
+			</UCheckbox>
 			<UButton
 				:loading="updating || creating"
 				:disabled="!meta.valid"

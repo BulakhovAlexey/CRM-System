@@ -41,6 +41,7 @@ export function useCreateTask() {
 	const [groupID, groupIDAttrs] = defineField('group')
 	const [executorID, executorIDAttrs] = defineField('executor')
 	const [date, dateAttrs] = defineField('date')
+	const [important, importantAttrs] = defineField('important')
 
 	if (isEditActionStore.isEditAction) {
 		setFieldValue('name', task.task_name)
@@ -48,6 +49,7 @@ export function useCreateTask() {
 		setFieldValue('group', task.groups.$id)
 		setFieldValue('executor', task.executor)
 		setFieldValue('date', new Date(task.end_date))
+		setFieldValue('important', task.isImportant)
 	}
 
 	const {
@@ -66,6 +68,7 @@ export function useCreateTask() {
 				executor: executorID.value,
 				owner: authStore.getID,
 				status: EnumStatus.in_process,
+				isImportant: important.value,
 			}),
 		onSuccess: () => {
 			needUpdateTasksBoard.set(true)
@@ -88,6 +91,7 @@ export function useCreateTask() {
 				end_date: date.value,
 				executor: executorID.value,
 				owner: authStore.getID,
+				isImportant: important.value,
 			}),
 		onSuccess: () => {
 			updateModalStore.set(false)
@@ -104,6 +108,8 @@ export function useCreateTask() {
 		name,
 		nameAttrs,
 		description,
+		important,
+		importantAttrs,
 		descriptionAttrs,
 		executorID,
 		executorIDAttrs,

@@ -37,7 +37,7 @@ const statusChangeHandler = async (
 			<div
 				class="task-view__body flex-[60%] p-2 border rounded-xl overflow-scroll"
 			>
-				<TaskStatusBadge :status="task.status" />
+				<TaskStatusBadge :status="task.status" :important="task.isImportant" />
 				<TaskDetailDescription :description="task.description" />
 				<TaskDetailGroup :group="task.groups.name" />
 				<TaskStatusButtons @statusChange="statusChangeHandler" :task="task" />

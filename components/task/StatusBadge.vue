@@ -21,14 +21,23 @@ const props = defineProps({
 		type: Boolean,
 		default: true,
 	},
+	important: {
+		type: Boolean,
+		default: false,
+	},
 })
 </script>
 
 <template>
 	<div v-if="showTitle" class="task-view__item border-b py-3">
-		<div class="task-view__status flex justify-start gap-3 items-center">
+		<div class="task-view__status inline-flex justify-start gap-3 items-center">
 			<span>Статус:</span>
 			<UBadge :color="getTaskStatusColor(status)" :label="status" />
+			<TaskImportantLabel
+				class="flex-1 flex justify-end"
+				:important="important"
+				size="25"
+			/>
 		</div>
 	</div>
 	<UBadge v-else :color="getTaskStatusColor(status)" :label="status" />

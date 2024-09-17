@@ -18,6 +18,7 @@ export function useTasks() {
 			executor: task.executor,
 			owner: task.owner,
 			status: task.status,
+			isImportant: task.isImportant,
 		}
 	}
 
