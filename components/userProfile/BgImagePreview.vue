@@ -25,7 +25,7 @@ const isSelected = () => {
 
 <template>
 	<UTooltip
-		class="h-[120px] w-[180px]"
+		class="h-[120px] w-[220px]"
 		:text="isSelected() ? 'Уже выбран' : 'Установить как фон'"
 		:popper="{ offsetDistance: 2 }"
 	>

@@ -3,24 +3,20 @@ const sideBarIsOpen = ref<boolean>(false)
 
 const items = [
 	{
-		slot: 'tasks',
-		label: 'Задачи',
-	},
-	{
 		slot: 'changeName',
-		label: 'Изменить имя',
+		label: 'Имя',
 	},
 	{
 		slot: 'changeEmail',
-		label: 'Изменить Email',
+		label: 'Email',
 	},
 	{
 		slot: 'changePassword',
-		label: 'Изменить пароль',
+		label: 'Пароль',
 	},
 	{
 		slot: 'changeBackGround',
-		label: 'Изменить фон',
+		label: 'Фон',
 	},
 ]
 const dividerOrientation = 'horizontal'
@@ -37,10 +33,10 @@ const dividerOrientation = 'horizontal'
 		</button>
 	</div>
 
-	<USlideover v-model="sideBarIsOpen" :ui="{ width: 'w-screen max-w-[800px]' }">
+	<USlideover v-model="sideBarIsOpen" :ui="{ width: 'w-screen max-w-[500px]' }">
 		<div class="p-4 flex-1 bg-gray-400">
-			<UTabs :items="items">
-				<template #tasks="{ item }"> tasks </template>
+			<h2 class="text-center pb-2 text-lg">Личный кабинет</h2>
+			<UTabs :items="items" class="flex-wrap">
 				<template #changeName="{ item }">
 					<div class="tab__inner">
 						<UserProfileChangeName :dividerOrientation="dividerOrientation" />

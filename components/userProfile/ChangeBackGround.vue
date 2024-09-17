@@ -38,7 +38,7 @@ onMounted(() => getFiles())
 			<div v-else class="images_cnt">
 				<div
 					v-for="item in refFiles"
-					class="flex justify-between items-center w-[180px] relative h-[120px]"
+					class="flex justify-between items-center w-[220px] relative h-[120px]"
 				>
 					<UserProfileBgImagePreview :image="item" @bgActionEmit="setNewBg" />
 				</div>
@@ -65,6 +65,6 @@ onMounted(() => getFiles())
 
 <style scoped>
 .images_cnt {
-	@apply flex flex-wrap justify-start gap-3;
+	@apply flex flex-wrap justify-start gap-3 px-2;
 }
 </style>
