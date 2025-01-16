@@ -1,75 +1,101 @@
-# Nuxt 3 Minimal Starter
+# CRM Система
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Небольшая CRM система с богатым функционалом, разработанная на современных веб-технологиях. Проект демонстрирует возможности управления задачами, пользователями и группами проектов в удобном и интуитивно понятном интерфейсе.
 
-## Setup
+## 🚀 Возможности
 
-Make sure to install the dependencies:
+### Аутентификация
+- Регистрация и авторизация пользователей.
+- Безопасная аутентификация через Appwrite.
 
-```bash
-# npm
-npm install
+### Управление задачами
+- **Создание задач**: Возможность добавить задачу с параметрами:
+  - Название
+  - Описание
+  - Группа проекта
+  - Срок выполнения
+  - Статус
+  - Метка "Важная"
+- **Редактирование задач**
+- **Канбан-доска**: Задачи распределяются по категориям:
+  - Просроченные
+  - На сегодня
+  - На этой неделе
+  - На следующей неделе
+- **Комментарии к задачам**:
+  - Добавление комментариев к задачам.
+  - Возможность пометить комментарий как "Результат."
+- **Фильтры**:
+  - По статусу задач.
+  - Отображение задач текущего пользователя.
 
-# pnpm
-pnpm install
+### Управление пользователями
+- **Список пользователей**: Представлен в виде таблицы с:
+  - Возможностью сортировки.
+  - Поиском.
 
-# yarn
-yarn install
+### Управление группами проектов
+- **Список групп**:
+  - Просмотр всех групп проектов.
+  - Редактирование названия, описания и ссылки на проект.
 
-# bun
-bun install
-```
+### Личный кабинет пользователя
+  - Возможность редактирования личных данных.
+  - Кастомизация интерфейса.
 
-## Development Server
+## 🛠️ Стек технологий
 
-Start the development server on `http://localhost:3000`:
+- ![Nuxt Logo](https://img.shields.io/badge/Nuxt-%5E3.11.2-green?logo=nuxt.js&logoColor=white)
+- ![Pinia Logo](https://img.shields.io/badge/Pinia-%5E2.1.7-orange?logo=vue.js&logoColor=white)
+- ![Appwrite Logo](https://img.shields.io/badge/Appwrite-%5E14.0.0-red?logo=appwrite&logoColor=white)
+- ![Nuxt UI Logo](https://img.shields.io/badge/Nuxt_UI-%5E2.15.2-green?logo=nuxt.js&logoColor=white)
+- ![TanStack Query Logo](https://img.shields.io/badge/TanStack_Query-%5E5.29.0-purple?logo=tanstack&logoColor=white)
+- ![TypeScript Logo](https://img.shields.io/badge/TypeScript-%5E5.0-blue?logo=typescript&logoColor=white)
+- ![Tailwind CSS Logo](https://img.shields.io/badge/Tailwind_CSS-%5E3.0-teal?logo=tailwindcss&logoColor=white)
 
-```bash
-# npm
-npm run dev
 
-# pnpm
-pnpm run dev
 
-# yarn
-yarn dev
 
-# bun
-bun run dev
-```
 
-## Production
 
-Build the application for production:
 
-```bash
-# npm
-npm run build
 
-# pnpm
-pnpm run build
+## 📂 Структура проекта
 
-# yarn
-yarn build
+- `pages/`: Все маршруты приложения.
+- `stores/`: Управление состоянием через Pinia.
+- `components/`: Повторно используемые UI-компоненты, кастомные хуки.
 
-# bun
-bun run build
-```
+## 🏁 Быстрый старт
 
-Locally preview production build:
+### Предварительные требования
+- **Node.js**: Убедитесь, что у вас установлен Node.js.
+- **Appwrite**: Настройте экземпляр Appwrite.
 
-```bash
-# npm
-npm run preview
+### Установка
 
-# pnpm
-pnpm run preview
+1. Клонируйте репозиторий:
+  ```bash
+  git clone https://github.com/BulakhovAlexey/CRM-System.git
+  cd crm-system
+  ```
 
-# yarn
-yarn preview
+2. Установите зависимости:
+  ```bash
+  npm install
+  ```
 
-# bun
-bun run preview
-```
+3. Dev mode
+  ```bash
+  npm run dev
+  ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+4. Production mode
+  ```bash
+  npm run build
+  ```
+
+5. Preview Production Build
+  ```bash
+  npm run preview
+  ```
