@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { EnumColumnsCode } from '~/types/types'
 const isOpen = ref<boolean>(false)
 
+const props = defineProps({
+	columnID: {
+		type: String as PropType<EnumColumnsCode>,
+		required: true,
+	},
+})
 const closeModal = () => {
 	isOpen.value = false
 }
@@ -10,6 +17,7 @@ const closeModal = () => {
 	<div
 		@click="isOpen = !isOpen"
 		class="create-task__add flex gap-1 justify-center items-center overflow-hidden p-2 cursor-pointer"
+		:class="{ hideBlock: columnID === EnumColumnsCode.overdue }"
 	>
 		<Icon
 			name="radix-icons:plus-circled"
@@ -40,5 +48,9 @@ const closeModal = () => {
 	transform: scale(1.2);
 	opacity: 0.8;
 	transition: all 0.4s ease 0s;
+}
+
+.hideBlock {
+	@apply opacity-0 pointer-events-none;
 }
 </style>

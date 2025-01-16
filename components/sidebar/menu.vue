@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { MAIN_MENU } from '~/seeders/main_menu'
+
+const router = useRoute()
+</script>
+
 <template>
 	<nav class="text-lg mt-4 text-center flex flex-col flex-wrap gap-3">
 		<NuxtLink
@@ -11,12 +17,6 @@
 		</NuxtLink>
 	</nav>
 </template>
-
-<script setup lang="ts">
-import { MAIN_MENU } from '~/seeders/main_menu'
-
-const router = useRoute()
-</script>
 
 <style scoped>
 .router-link-active {

@@ -63,7 +63,7 @@ const filterTasks = (tasks: ITask[]) => {
 						:column="column"
 						:columnTasksLength="filterTasks(column.items).length"
 					/>
-					<TaskCreateModal />
+					<TaskCreateModal :columnID="column.id" />
 					<TaskList :tasks="filterTasks(column.items)" />
 				</div>
 			</div>

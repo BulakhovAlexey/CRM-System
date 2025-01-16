@@ -4,12 +4,11 @@ import { storageID } from '~/DbConstants'
 import { Query } from 'appwrite'
 
 const bgImageCookie = useCookie<string | undefined>('bgImagePath', {
-	maxAge: 1500000,
+	maxAge: 15000,
 })
 
 const bgImage = ref<string | undefined>(undefined)
 
-console.log(bgImageCookie.value)
 const getDefaultImage = async () => {
 	if (!bgImageCookie.value) {
 		const response = await storage.listFiles(storageID, [Query.limit(1)])

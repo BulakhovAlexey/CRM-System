@@ -28,6 +28,6 @@ const props = defineProps({
 	@apply h-full overflow-auto;
 }
 .item {
-	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all bg-slate-200;
+	@apply border rounded-md p-2 scale-95 cursor-pointer hover:scale-100 transition-all bg-textMain bg-opacity-55;
 }
 </style>
